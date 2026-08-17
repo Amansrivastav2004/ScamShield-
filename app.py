@@ -54,11 +54,25 @@ def serve_static(filename):
 @app.before_request
 def resolve_vercel_route_path():
     """Ensure Vercel serverless function rewrites match original request paths cleanly."""
-    matched_path = request.headers.get('X-Matched-Path') or request.environ.get('HTTP_X_MATCHED_PATH') or request.headers.get('X-Forwarded-Uri') or request.headers.get('X-Original-Uri')
-    if matched_path and not matched_path.startswith('/static/'):
-        clean_path = matched_path.split('?')[0]
+    raw_path = (
+        request.headers.get('x-forwarded-uri') or 
+        request.headers.get('x-matched-path') or 
+        request.headers.get('x-original-uri') or 
+        request.headers.get('x-vercel-forwarded-path') or
+        request.environ.get('HTTP_X_FORWARDED_URI') or 
+        request.environ.get('HTTP_X_MATCHED_PATH') or
+        request.environ.get('RAW_URI')
+    )
+    if raw_path and not raw_path.startswith('/static/'):
+        clean_path = raw_path.split('?')[0]
         if clean_path and clean_path not in ['/api/index', '/api/index.py']:
             request.environ['PATH_INFO'] = clean_path
+
+@app.route('/api/index')
+@app.route('/api/index.py')
+def vercel_index_fallback():
+    """Fallback route if Vercel passes /api/index directly."""
+    return home()
 
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB Max Upload Limit
 
