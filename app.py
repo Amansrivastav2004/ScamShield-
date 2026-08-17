@@ -2,12 +2,17 @@ import os
 import re
 import json
 import io
-from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
+from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, send_from_directory
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 
 # Load Environment Variables
 load_dotenv()
+
+# Define Absolute Base Directories
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
 # Import Database & Utility Services
 from database.database import (
@@ -22,14 +27,25 @@ from utils.helpers import (
     get_quiz_questions, get_safety_articles
 )
 
-# Initialize Flask Application
-app = Flask(__name__, static_folder='static', static_url_path='/static')
+# Initialize Flask Application with Explicit Absolute Paths
+app = Flask(
+    __name__, 
+    root_path=BASE_DIR,
+    static_folder=STATIC_DIR, 
+    static_url_path='/static',
+    template_folder=TEMPLATE_DIR
+)
 app.secret_key = os.getenv('SECRET_KEY', 'scamshield_super_secret_cyber_security_key_2026')
 
 if os.getenv('VERCEL'):
     app.config['UPLOAD_FOLDER'] = '/tmp/uploads'
 else:
-    app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'uploads')
+    app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, 'uploads')
+
+# Explicit Static File Route for Vercel Serverless Functions
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory(STATIC_DIR, filename)
 
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB Max Upload Limit
 
