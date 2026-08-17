@@ -3,7 +3,13 @@ import json
 import os
 import requests
 
-DB_PATH = os.path.join(os.path.dirname(__file__), 'scamshield.db')
+# Detect Vercel / Serverless Environment
+IS_SERVERLESS = bool(os.getenv('VERCEL') or os.getenv('AWS_LAMBDA_FUNCTION_NAME') or os.getenv('SERVERLESS'))
+if IS_SERVERLESS:
+    DB_PATH = '/tmp/scamshield.db'
+else:
+    DB_PATH = os.path.join(os.path.dirname(__file__), 'scamshield.db')
+
 SCHEMA_PATH = os.path.join(os.path.dirname(__file__), 'schema.sql')
 
 # Cloudflare D1 Environment Configuration

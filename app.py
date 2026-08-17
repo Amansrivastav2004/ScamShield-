@@ -25,10 +25,15 @@ from utils.helpers import (
 # Initialize Flask Application
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'scamshield_super_secret_cyber_security_key_2026')
-app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'uploads')
+
+if os.getenv('VERCEL'):
+    app.config['UPLOAD_FOLDER'] = '/tmp/uploads'
+else:
+    app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'uploads')
+
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB Max Upload Limit
 
-# Ensure Uploads folder exists locally (ignored if read-only filesystem)
+# Ensure Uploads folder exists
 try:
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 except Exception:
