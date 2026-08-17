@@ -11,7 +11,10 @@ load_dotenv()
 
 # Define Absolute Base Directories
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-STATIC_DIR = os.path.join(BASE_DIR, 'static')
+if os.path.exists(os.path.join(BASE_DIR, 'public', 'static')):
+    STATIC_DIR = os.path.join(BASE_DIR, 'public', 'static')
+else:
+    STATIC_DIR = os.path.join(BASE_DIR, 'static')
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
 # Import Database & Utility Services
