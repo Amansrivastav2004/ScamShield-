@@ -50,30 +50,9 @@ function closeModal(modalId) {
     }
 }
 
-// Interactive Tab Switcher Helper
-function initTabSwitcher(navSelector, panelSelector) {
-    const navButtons = document.querySelectorAll(navSelector);
-    const panels = document.querySelectorAll(panelSelector);
-
-    navButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetId = btn.getAttribute('data-target');
-            
-            navButtons.forEach(b => b.classList.remove('active'));
-            panels.forEach(p => p.classList.remove('active'));
-
-            btn.classList.add('active');
-            const targetPanel = document.getElementById(targetId);
-            if (targetPanel) {
-                targetPanel.classList.add('active');
-            }
-        });
-    });
-}
-
-// Initialize Global Components on DOM Load
+// Initialize Global UI Components
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Mobile Drawer Toggle
+    // Mobile Drawer Toggle
     const mobileToggle = document.getElementById('mobileToggle');
     const navLinks = document.getElementById('navLinks');
     
@@ -83,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. Language Dropdown Toggle
+    // Language Dropdown Toggle
     const langBtn = document.getElementById('langBtn');
     const langDropdown = document.getElementById('langDropdown');
     
@@ -98,13 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. Initialize Approach Section Tabs
-    initTabSwitcher('.approach-tab-btn', '.approach-panel');
-
-    // 4. Initialize Platform Spotlight Tabs
-    initTabSwitcher('.spotlight-tab-btn', '.spotlight-panel');
-
-    // 5. Close Modals on Overlay Click
+    // Close Modals on Overlay Click
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {

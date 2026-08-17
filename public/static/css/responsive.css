@@ -1,34 +1,13 @@
-/* ScamShield Responsive Layout Breakpoints */
+/* ScamShield Responsive Breakpoints */
 
-@media (max-width: 1200px) {
-    .container {
-        max-width: 1000px;
+@media (max-width: 1024px) {
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
     }
     
     .hero-title {
-        font-size: 2.75rem;
-    }
-}
-
-@media (max-width: 1024px) {
-    .hero-grid {
-        grid-template-columns: 1fr !important;
-        gap: 3rem !important;
-        text-align: center;
-    }
-    
-    .hero-actions {
-        justify-content: center;
-    }
-    
-    .spotlight-grid {
-        grid-template-columns: 1fr !important;
-        gap: 2.5rem !important;
-    }
-    
-    .footer-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 2.5rem;
+        font-size: 2.25rem;
     }
 }
 
@@ -53,18 +32,8 @@
         display: block;
     }
     
-    .service-grid {
+    .feature-grid {
         grid-template-columns: 1fr;
-    }
-    
-    .trust-banner-container {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .partner-logo-group {
-        justify-content: center;
-        gap: 1.5rem;
     }
     
     .footer-grid {
@@ -81,18 +50,29 @@
         grid-template-columns: 1fr !important;
     }
     
+    .scan-hub-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
     .result-grid {
         grid-template-columns: 1fr !important;
     }
     
-    .tab-header-nav {
-        flex-wrap: wrap;
+    .toast-container {
+        left: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+    }
+    
+    .toast {
+        min-width: unset;
+        width: 100%;
     }
 }
 
 @media (max-width: 480px) {
-    h1 { font-size: 2rem; }
-    h2 { font-size: 1.6rem; }
+    h1 { font-size: 1.85rem; }
+    h2 { font-size: 1.5rem; }
     
     .container {
         padding: 0 1rem;
@@ -102,12 +82,7 @@
         width: 100%;
     }
     
-    .css-3d-lock-container {
-        height: 280px;
-    }
-    
-    .css-3d-lock-body {
-        width: 170px;
-        height: 190px;
+    .modal-content {
+        padding: 1.25rem;
     }
 }
