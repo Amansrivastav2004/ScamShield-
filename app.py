@@ -56,26 +56,21 @@ class VercelPathMiddleware:
         self.app = app
 
     def __call__(self, environ, start_response):
-        matched_path = (
+        raw_uri = (
+            environ.get('RAW_URI') or 
+            environ.get('REQUEST_URI') or 
             environ.get('HTTP_X_FORWARDED_URI') or 
             environ.get('HTTP_X_MATCHED_PATH') or 
             environ.get('HTTP_X_ORIGINAL_URI') or 
-            environ.get('HTTP_X_VERCEL_FORWARDED_PATH') or
-            environ.get('RAW_URI')
+            environ.get('HTTP_X_VERCEL_FORWARDED_PATH')
         )
-        if matched_path and not matched_path.startswith('/static/'):
-            clean_path = matched_path.split('?')[0]
+        if raw_uri and not raw_uri.startswith('/static/'):
+            clean_path = raw_uri.split('?')[0]
             if clean_path and clean_path not in ['/api/index', '/api/index.py']:
                 environ['PATH_INFO'] = clean_path
         return self.app(environ, start_response)
 
 app.wsgi_app = VercelPathMiddleware(app.wsgi_app)
-
-@app.route('/api/index')
-@app.route('/api/index.py')
-def vercel_index_fallback():
-    """Fallback route if Vercel passes /api/index directly."""
-    return home()
 
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB Max Upload Limit
 
