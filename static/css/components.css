@@ -1,12 +1,12 @@
-/* ScamShield Custom Components & Micro-Interactions */
+/* ScamShield Cyberty SaaS Component System */
 
 /* Buttons System */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
+    gap: 0.6rem;
+    padding: 0.8rem 1.6rem;
     font-family: var(--font-main);
     font-size: 0.95rem;
     font-weight: 600;
@@ -19,19 +19,19 @@
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+    background: var(--gradient-primary);
     color: #ffffff;
-    box-shadow: 0 4px 15px var(--accent-cyan-glow);
+    box-shadow: 0 4px 20px rgba(0, 136, 255, 0.4);
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.45);
+    box-shadow: 0 6px 25px rgba(0, 210, 255, 0.55);
     color: #ffffff;
 }
 
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.05);
     border-color: var(--border-color);
     color: var(--text-primary);
 }
@@ -39,7 +39,7 @@
 .btn-secondary:hover {
     background: rgba(255, 255, 255, 0.12);
     border-color: var(--border-highlight);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
 }
 
 .btn-danger {
@@ -50,17 +50,17 @@
 
 .btn-danger:hover {
     background: rgba(239, 68, 68, 0.25);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
 }
 
 .btn-sm {
-    padding: 0.4rem 0.9rem;
+    padding: 0.45rem 1rem;
     font-size: 0.85rem;
     border-radius: var(--radius-sm);
 }
 
 .btn-lg {
-    padding: 0.95rem 2rem;
+    padding: 1rem 2.2rem;
     font-size: 1.05rem;
     border-radius: var(--radius-md);
 }
@@ -68,11 +68,9 @@
 /* Glassmorphism Cards */
 .glass-card {
     background: var(--bg-card);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
-    padding: 1.75rem;
+    padding: 2rem;
     box-shadow: var(--shadow-subtle);
     transition: all var(--transition-normal);
 }
@@ -82,81 +80,179 @@
     box-shadow: var(--shadow-glow);
 }
 
-/* Action Feature Cards */
-.feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.5rem;
-    margin: 2.5rem 0;
+/* Trust / Partner Banner */
+.trust-banner {
+    background: var(--gradient-trust-banner);
+    padding: 2.2rem 0;
+    margin: 3rem 0 5rem 0;
+    box-shadow: 0 10px 30px rgba(0, 85, 255, 0.3);
 }
 
-.action-card {
+.trust-banner-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.partner-logo-group {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+
+.partner-logo-item {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: -0.01em;
+}
+
+/* Services / Scanners Grid Cards */
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.service-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
-    padding: 2rem 1.5rem;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    text-decoration: none;
-    transition: all var(--transition-normal);
+    padding: 2.2rem 1.75rem;
     position: relative;
     overflow: hidden;
+    transition: all var(--transition-normal);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.action-card::before {
+.service-card::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 3px;
-    background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+    background: var(--gradient-primary);
     opacity: 0;
-    transition: opacity var(--transition-normal);
+    transition: opacity var(--transition-fast);
 }
 
-.action-card:hover {
-    transform: translateY(-5px);
+.service-card:hover {
+    transform: translateY(-6px);
     background: var(--bg-card-hover);
     border-color: var(--border-highlight);
     box-shadow: var(--shadow-glow);
 }
 
-.action-card:hover::before {
+.service-card:hover::before {
     opacity: 1;
 }
 
-.action-card-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 16px;
-    background: rgba(6, 182, 212, 0.12);
-    border: 1px solid rgba(6, 182, 212, 0.25);
+.service-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 14px;
+    background: rgba(0, 210, 255, 0.1);
+    border: 1px solid rgba(0, 210, 255, 0.25);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.75rem;
+    font-size: 1.6rem;
     color: var(--accent-cyan);
     transition: all var(--transition-normal);
 }
 
-.action-card:hover .action-card-icon {
+.service-card:hover .service-icon {
     background: var(--accent-cyan);
     color: #ffffff;
-    box-shadow: 0 0 20px var(--accent-cyan-glow);
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.6);
 }
 
-/* Risk Gauges & Badges */
+.service-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--accent-cyan);
+    margin-top: auto;
+    transition: gap var(--transition-fast);
+}
+
+.service-card:hover .service-link {
+    gap: 0.75rem;
+    color: var(--accent-light-blue);
+}
+
+/* Approach & Spotlight Interactive Tabs */
+.tab-header-nav {
+    display: flex;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.tab-nav-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-family: var(--font-main);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    position: relative;
+    transition: color var(--transition-fast);
+}
+
+.tab-nav-btn.active {
+    color: var(--accent-cyan);
+}
+
+.tab-nav-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -0.85rem;
+    left: 0; right: 0;
+    height: 3px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+}
+
+.tab-content-panel {
+    display: none;
+}
+
+.tab-content-panel.active {
+    display: block;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Risk Meter & Badges */
 .badge-risk {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.4rem 1rem;
+    padding: 0.45rem 1.1rem;
     border-radius: 30px;
     font-weight: 700;
-    font-size: 0.9rem;
-    letter-spacing: 0.03em;
+    font-size: 0.88rem;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
 }
 
@@ -182,10 +278,10 @@
     background: var(--risk-high-bg);
     color: var(--risk-high);
     border: 1px solid rgba(239, 68, 68, 0.4);
-    box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
 }
 
-/* Risk Gauge Animated Meter */
+/* Animated SVG Gauge */
 .gauge-container {
     position: relative;
     width: 220px;
@@ -228,13 +324,26 @@
     color: var(--text-primary);
 }
 
-.gauge-subtext {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-top: -0.5rem;
+/* Numbered Action Steps (01, 02, 03, 04, 05) */
+.action-step-card {
+    background: rgba(11, 17, 32, 0.8);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
 }
 
-/* Input Dropzones & Forms */
+.action-step-number {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent-cyan);
+    min-width: 32px;
+}
+
+/* Forms & Dropzones */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -253,7 +362,7 @@
 
 .form-control {
     width: 100%;
-    background: rgba(11, 15, 25, 0.7);
+    background: #0b1120;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     padding: 0.9rem 1.1rem;
@@ -266,8 +375,8 @@
 .form-control:focus {
     outline: none;
     border-color: var(--accent-cyan);
-    box-shadow: 0 0 12px var(--accent-cyan-glow);
-    background: rgba(17, 24, 39, 0.9);
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+    background: #111827;
 }
 
 textarea.form-control {
@@ -275,15 +384,9 @@ textarea.form-control {
     min-height: 140px;
 }
 
-.char-counter {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-}
-
-/* Drag and Drop Upload Area */
 .dropzone {
-    border: 2px dashed rgba(6, 182, 212, 0.3);
-    background: rgba(6, 182, 212, 0.03);
+    border: 2px dashed rgba(0, 210, 255, 0.3);
+    background: rgba(0, 210, 255, 0.03);
     border-radius: var(--radius-lg);
     padding: 3rem 1.5rem;
     text-align: center;
@@ -297,7 +400,7 @@ textarea.form-control {
 
 .dropzone:hover, .dropzone.dragover {
     border-color: var(--accent-cyan);
-    background: rgba(6, 182, 212, 0.08);
+    background: rgba(0, 210, 255, 0.08);
     box-shadow: var(--shadow-glow);
 }
 
@@ -308,7 +411,7 @@ textarea.form-control {
 
 /* Highlighted Text Box */
 .highlight-box {
-    background: rgba(15, 23, 42, 0.8);
+    background: #0b1120;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     padding: 1.25rem;
@@ -329,7 +432,6 @@ textarea.form-control {
     font-weight: 600;
 }
 
-/* Warning Cards */
 .warning-card {
     background: rgba(239, 68, 68, 0.08);
     border-left: 4px solid var(--risk-high);
@@ -346,7 +448,7 @@ textarea.form-control {
     font-size: 1.25rem;
 }
 
-/* Toast Notifications */
+/* Toast Notifications & Modal Overlay */
 .toast-container {
     position: fixed;
     bottom: 2rem;
@@ -358,7 +460,7 @@ textarea.form-control {
 }
 
 .toast {
-    background: var(--bg-secondary);
+    background: var(--bg-card);
     border: 1px solid var(--border-color);
     color: var(--text-primary);
     padding: 0.9rem 1.25rem;
@@ -368,24 +470,13 @@ textarea.form-control {
     align-items: center;
     gap: 0.75rem;
     font-size: 0.9rem;
-    animation: toastIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     min-width: 280px;
 }
 
-@keyframes toastIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.toast-success i { color: var(--risk-safe); }
-.toast-error i { color: var(--risk-high); }
-.toast-info i { color: var(--accent-cyan); }
-
-/* Modal Dialog */
 .modal-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(8px);
     z-index: 1500;
     display: none;
@@ -399,7 +490,7 @@ textarea.form-control {
 }
 
 .modal-content {
-    background: var(--bg-secondary);
+    background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     width: 100%;
@@ -409,12 +500,6 @@ textarea.form-control {
     padding: 2rem;
     box-shadow: var(--shadow-subtle);
     position: relative;
-    animation: modalIn 0.3s ease-out;
-}
-
-@keyframes modalIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
 }
 
 .modal-close {
@@ -429,15 +514,79 @@ textarea.form-control {
 }
 .modal-close:hover { color: var(--text-primary); }
 
-/* Skeleton Loading State */
-.skeleton {
-    background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
-    background-size: 200% 100%;
-    animation: skeletonShimmer 1.5s infinite;
-    border-radius: var(--radius-sm);
+/* Pure CSS 3D Padlock & Security Graphics */
+.css-3d-lock-container {
+    width: 100%;
+    height: 380px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-@keyframes skeletonShimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+.css-3d-lock-body {
+    width: 220px;
+    height: 240px;
+    background: linear-gradient(135deg, #0088ff 0%, #00d2ff 100%);
+    border-radius: 36px;
+    box-shadow: 
+        0 20px 50px rgba(0, 136, 255, 0.4),
+        inset 0 2px 5px rgba(255, 255, 255, 0.4);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: float3d 4s ease-in-out infinite;
+}
+
+@keyframes float3d {
+    0%, 100% { transform: translateY(0px) rotate(-2deg); }
+    50% { transform: translateY(-12px) rotate(2deg); }
+}
+
+.css-3d-lock-shackle {
+    position: absolute;
+    top: -90px;
+    width: 130px;
+    height: 120px;
+    border: 24px solid #38bdf8;
+    border-bottom: none;
+    border-radius: 65px 65px 0 0;
+    box-shadow: inset 0 3px 6px rgba(255,255,255,0.4);
+}
+
+.css-3d-keyhole {
+    width: 32px;
+    height: 32px;
+    background: #060a17;
+    border-radius: 50%;
+    position: relative;
+}
+
+.css-3d-keyhole::after {
+    content: '';
+    position: absolute;
+    bottom: -14px;
+    left: 8px;
+    width: 16px;
+    height: 20px;
+    background: #060a17;
+    clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+}
+
+.css-3d-password-bar {
+    position: absolute;
+    bottom: -35px;
+    background: #111827;
+    border: 1px solid var(--accent-cyan);
+    padding: 0.6rem 1.25rem;
+    border-radius: 30px;
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: monospace;
+    font-size: 1.2rem;
+    color: var(--accent-cyan);
 }

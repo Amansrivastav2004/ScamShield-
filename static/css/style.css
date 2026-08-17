@@ -1,27 +1,32 @@
-/* ScamShield Modern Cybersecurity Design System */
+/* ScamShield Premium Cybersecurity SaaS Design System */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap');
 
 :root {
     /* Color Palette */
-    --bg-primary: #0b0f19;
-    --bg-secondary: #111827;
-    --bg-card: rgba(17, 24, 39, 0.7);
-    --bg-card-hover: rgba(31, 41, 55, 0.8);
-    --bg-glass: rgba(15, 23, 42, 0.65);
+    --bg-primary: #060a17;
+    --bg-secondary: #0b1120;
+    --bg-card: #111827;
+    --bg-card-hover: #151d2e;
+    --bg-glass: rgba(17, 24, 39, 0.75);
     
     --border-color: rgba(255, 255, 255, 0.08);
-    --border-highlight: rgba(34, 211, 238, 0.3);
+    --border-highlight: rgba(0, 210, 255, 0.35);
     
-    --text-primary: #f9fafb;
-    --text-secondary: #9ca3af;
-    --text-muted: #6b7280;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
     
     /* Brand Accent Colors */
-    --accent-cyan: #06b6d4;
-    --accent-cyan-glow: rgba(6, 182, 212, 0.35);
-    --accent-blue: #3b82f6;
+    --accent-blue: #0088ff;
+    --accent-cyan: #00d2ff;
+    --accent-light-blue: #38bdf8;
     --accent-purple: #8b5cf6;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(90deg, #0088ff 0%, #00d2ff 100%);
+    --gradient-trust-banner: linear-gradient(90deg, #0088ff 0%, #0055ff 100%);
+    --gradient-card: linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(11, 17, 32, 0.9) 100%);
     
     /* Risk Meter Levels */
     --risk-safe: #10b981;
@@ -35,13 +40,13 @@
     
     /* Layout & Shadows */
     --radius-sm: 8px;
-    --radius-md: 14px;
+    --radius-md: 12px;
     --radius-lg: 20px;
     --radius-xl: 28px;
     
-    --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.3);
-    --shadow-glow: 0 0 25px rgba(6, 182, 212, 0.15);
-    --shadow-high-risk: 0 0 30px rgba(239, 68, 68, 0.25);
+    --shadow-subtle: 0 4px 25px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 30px rgba(0, 210, 255, 0.2);
+    --shadow-high-risk: 0 0 35px rgba(239, 68, 68, 0.25);
     
     --font-main: 'Inter', system-ui, -apple-system, sans-serif;
     --font-heading: 'Outfit', 'Inter', sans-serif;
@@ -72,8 +77,8 @@ body {
     flex-direction: column;
     overflow-x: hidden;
     background-image: 
-        radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.06) 0%, transparent 40%);
+        radial-gradient(circle at 15% 15%, rgba(0, 136, 255, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 65%, rgba(0, 210, 255, 0.06) 0%, transparent 45%);
     background-attachment: fixed;
 }
 
@@ -81,12 +86,12 @@ body {
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     font-weight: 700;
-    line-height: 1.25;
+    line-height: 1.2;
     color: var(--text-primary);
 }
 
-h1 { font-size: 2.75rem; letter-spacing: -0.02em; }
-h2 { font-size: 2rem; letter-spacing: -0.01em; }
+h1 { font-size: 3.25rem; letter-spacing: -0.02em; }
+h2 { font-size: 2.25rem; letter-spacing: -0.01em; }
 h3 { font-size: 1.5rem; }
 h4 { font-size: 1.2rem; }
 
@@ -98,17 +103,11 @@ a {
     text-decoration: none;
     transition: color var(--transition-fast);
 }
-a:hover { color: #22d3ee; }
+a:hover { color: var(--accent-light-blue); }
 
 /* Gradient Text Helper */
 .text-gradient {
-    background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.text-gradient-cyan {
-    background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%);
+    background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -122,7 +121,7 @@ a:hover { color: #22d3ee; }
 
 .container {
     width: 100%;
-    max-width: 1240px;
+    max-width: 1300px;
     margin: 0 auto;
     padding: 0 1.5rem;
 }
@@ -132,11 +131,11 @@ a:hover { color: #22d3ee; }
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: rgba(11, 15, 25, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(6, 10, 23, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-color);
-    padding: 1rem 0;
+    padding: 1.1rem 0;
     transition: all var(--transition-fast);
 }
 
@@ -151,16 +150,16 @@ a:hover { color: #22d3ee; }
     align-items: center;
     gap: 0.75rem;
     font-family: var(--font-heading);
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 800;
     color: var(--text-primary);
     text-decoration: none;
 }
 
 .nav-logo i {
-    font-size: 1.75rem;
+    font-size: 1.85rem;
     color: var(--accent-cyan);
-    filter: drop-shadow(0 0 8px var(--accent-cyan));
+    filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.6));
 }
 
 .nav-links {
@@ -199,7 +198,7 @@ a:hover { color: #22d3ee; }
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-color);
     color: var(--text-primary);
-    padding: 0.45rem 0.85rem;
+    padding: 0.5rem 0.9rem;
     border-radius: var(--radius-sm);
     font-size: 0.875rem;
     font-weight: 500;
@@ -248,7 +247,7 @@ a:hover { color: #22d3ee; }
 }
 
 .lang-option:hover, .lang-option.active {
-    background: rgba(6, 182, 212, 0.15);
+    background: rgba(0, 210, 255, 0.15);
     color: var(--accent-cyan);
 }
 
@@ -264,9 +263,9 @@ a:hover { color: #22d3ee; }
 
 /* Footer Section */
 .footer {
-    background: var(--bg-secondary);
+    background: #040710;
     border-top: 1px solid var(--border-color);
-    padding: 3.5rem 0 2rem 0;
+    padding: 4rem 0 2rem 0;
     margin-top: auto;
 }
 
@@ -274,7 +273,7 @@ a:hover { color: #22d3ee; }
     display: grid;
     grid-template-columns: 2fr repeat(3, 1fr);
     gap: 3rem;
-    margin-bottom: 3rem;
+    margin-bottom: 3.5rem;
 }
 
 .footer-brand p {

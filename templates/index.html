@@ -1,120 +1,47 @@
 {% extends 'base.html' %}
 {% set active_page = 'home' %}
 
-{% block title %}ScamShield — Don't Trust It. Check It.{% endblock %}
+{% block title %}ScamShield — Protecting Your Information & Money From Cyber Scams{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
+<!-- 1. HERO SECTION (Two-Column Layout) -->
 <section style="padding: 4rem 0 3rem 0; position: relative;">
-    <div class="container text-center" style="max-width: 900px;">
-        <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.25); padding: 0.4rem 1rem; border-radius: 30px; margin-bottom: 1.5rem;">
-            <i class="fas fa-shield-alt" style="color: var(--accent-cyan);"></i>
-            <span style="font-size: 0.85rem; font-weight: 600; color: var(--accent-cyan);">AI-Powered Cyber Safety & Scam Awareness Platform</span>
-        </div>
-
-        <h1 class="hero-title" style="margin-bottom: 1.25rem;">
-            <span data-i18n="tagline">Don't Trust It. Check It.</span>
-        </h1>
-        
-        <p style="font-size: 1.2rem; max-width: 750px; margin: 0 auto 2.5rem auto;" data-i18n="hero_subtitle">
-            Scan suspicious messages, links, screenshots, and call transcripts before they put your money or personal information at risk.
-        </p>
-
-        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-            <a href="/scan" class="btn btn-primary btn-lg" data-i18n="start_scan">
-                <i class="fas fa-search"></i> Start Free Scan
-            </a>
-            <a href="/quiz" class="btn btn-secondary btn-lg">
-                <i class="fas fa-gamepad"></i> Try Scam Quiz
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- 4 Core Scanner Feature Cards -->
-<section style="padding: 2rem 0 4rem 0;">
     <div class="container">
-        <div class="feature-grid">
-            <a href="/scan/message" class="action-card">
-                <div class="action-card-icon">
-                    <i class="fas fa-comment-dots"></i>
+        <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center;" class="hero-grid">
+            <!-- Left Copy & CTAs -->
+            <div>
+                <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.3); padding: 0.45rem 1.1rem; border-radius: 30px; margin-bottom: 1.5rem;">
+                    <i class="fas fa-shield-alt" style="color: var(--accent-cyan);"></i>
+                    <span style="font-size: 0.85rem; font-weight: 700; letter-spacing: 0.05em; color: var(--accent-cyan); text-transform: uppercase;">CYBER SAFETY PLATFORM</span>
                 </div>
-                <h3 data-i18n="check_msg">Check Message</h3>
-                <p style="font-size: 0.9rem;">Analyze SMS, WhatsApp, and Emails for fake KYC, payment demands, and threat language.</p>
-            </a>
 
-            <a href="/scan/url" class="action-card">
-                <div class="action-card-icon">
-                    <i class="fas fa-link"></i>
-                </div>
-                <h3 data-i18n="check_url">Check URL</h3>
-                <p style="font-size: 0.9rem;">Detect spoofed bank domains, IP-address links, URL shorteners, and suspicious TLDs.</p>
-            </a>
+                <h1 class="hero-title" style="margin-bottom: 1.5rem;">
+                    Protecting Your <span class="text-gradient">Information & Money</span> From Cyber Scams.
+                </h1>
 
-            <a href="/scan/screenshot" class="action-card">
-                <div class="action-card-icon">
-                    <i class="fas fa-camera"></i>
-                </div>
-                <h3 data-i18n="scan_screenshot">Scan Screenshot</h3>
-                <p style="font-size: 0.9rem;">Upload screenshots of suspicious chats or payment alerts. Extracted via Tesseract OCR.</p>
-            </a>
+                <p style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2.5rem; max-width: 600px;">
+                    Scan suspicious messages, links, screenshots, and call transcripts before they put your money or personal information at risk.
+                </p>
 
-            <a href="/scan/call" class="action-card">
-                <div class="action-card-icon">
-                    <i class="fas fa-phone-volume"></i>
-                </div>
-                <h3 data-i18n="check_call">Check Call</h3>
-                <p style="font-size: 0.9rem;">Analyze call transcripts or audio clips for digital arrest threats and remote app demands.</p>
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- Realistic Security Dashboard Preview -->
-<section style="padding: 2rem 0 4rem 0;">
-    <div class="container">
-        <div class="glass-card" style="padding: 2.5rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-                <div>
-                    <h2>Live Threat Analysis Preview</h2>
-                    <p style="font-size: 0.95rem;">Real-time risk scoring engine with category detection and actionable safety steps.</p>
-                </div>
-                <div class="disclaimer-badge">
-                    <i class="fas fa-info-circle"></i> Transparent Scoring Logic
+                <div style="display: flex; gap: 1.25rem; flex-wrap: wrap;" class="hero-actions">
+                    <a href="/scan" class="btn btn-primary btn-lg" data-i18n="start_scan">
+                        Start Free Scan <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="/safety-center" class="btn btn-secondary btn-lg">
+                        Explore Scam Safety
+                    </a>
                 </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; align-items: center;" class="dashboard-grid">
-                <!-- Sample Gauge Card -->
-                <div style="background: rgba(11, 15, 25, 0.7); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; text-align: center;">
-                    <span class="badge-risk badge-high" style="margin-bottom: 1rem;">🔴 HIGH RISK</span>
-                    <div style="font-size: 3.5rem; font-weight: 800; color: var(--risk-high); font-family: var(--font-heading);">91<span style="font-size: 1.5rem; color: var(--text-muted);">/100</span></div>
-                    <div style="font-weight: 700; color: var(--text-primary); margin-top: 0.5rem;">KYC Scam Pattern Detected</div>
-                </div>
-
-                <!-- Sample Warning Indicators -->
-                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                    <div class="warning-card">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <div>
-                            <strong style="color: var(--text-primary); font-size: 0.95rem;">Threat of Account Suspension</strong>
-                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Detected phrase: "account will be blocked within 24 hours"</div>
-                        </div>
-                    </div>
-
-                    <div class="warning-card">
-                        <i class="fas fa-link"></i>
-                        <div>
-                            <strong style="color: var(--text-primary); font-size: 0.95rem;">Lookalike Bank Domain</strong>
-                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Detected link: http://sbi-update-kyc.top</div>
-                        </div>
-                    </div>
-
-                    <div class="warning-card">
-                        <i class="fas fa-key"></i>
-                        <div>
-                            <strong style="color: var(--text-primary); font-size: 0.95rem;">Requests Sensitive Credentials</strong>
-                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Asks user to share PAN card & OTP for verification</div>
+            <!-- Right 3D Visual Graphic -->
+            <div>
+                <div class="css-3d-lock-container">
+                    <div class="css-3d-lock-shackle"></div>
+                    <div class="css-3d-lock-body">
+                        <div class="css-3d-keyhole"></div>
+                        <div class="css-3d-password-bar">
+                            <i class="fas fa-lock"></i>
+                            <span>****</span>
                         </div>
                     </div>
                 </div>
@@ -123,55 +50,296 @@
     </div>
 </section>
 
-<!-- How ScamShield Works 5-Step Process -->
+<!-- 2. TRUST / PARTNER BANNER -->
+<section class="trust-banner">
+    <div class="container trust-banner-container">
+        <div style="font-family: var(--font-heading); font-weight: 800; font-size: 1.1rem; color: #ffffff; text-transform: uppercase; letter-spacing: 0.05em;">
+            Built With Trusted Security Technology
+        </div>
+        <div class="partner-logo-group">
+            <span class="partner-logo-item"><i class="fab fa-microsoft"></i> Microsoft</span>
+            <span class="partner-logo-item"><i class="fab fa-google"></i> Google</span>
+            <span class="partner-logo-item"><i class="fab fa-amazon"></i> Amazon</span>
+            <span class="partner-logo-item"><i class="fas fa-shield-halved"></i> Cloud Security</span>
+            <span class="partner-logo-item"><i class="fas fa-building-columns"></i> Bank Security</span>
+        </div>
+    </div>
+</section>
+
+<!-- 3. SERVICES / SCANNERS GRID (6 CARDS) -->
+<section style="padding: 2rem 0 4rem 0;">
+    <div class="container">
+        <div class="text-center" style="max-width: 700px; margin: 0 auto 3rem auto;">
+            <h2>Everything You Need To Stay Scam-Safe</h2>
+            <p>Comprehensive scam analysis tools designed for personal cyber safety and threat awareness.</p>
+        </div>
+
+        <div class="service-grid">
+            <!-- Card 1 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-comment-dots"></i></div>
+                <h3>Message Security</h3>
+                <p>Analyze suspicious SMS, WhatsApp messages, and emails for fake KYC, payment threats, and OTP demands.</p>
+                <a href="/scan/message" class="service-link">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-link"></i></div>
+                <h3>Link Verification</h3>
+                <p>Check suspicious URLs, lookalike bank domains, raw IP addresses, and shortened phishing links.</p>
+                <a href="/scan/url" class="service-link">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-camera"></i></div>
+                <h3>Screenshot OCR</h3>
+                <p>Upload screenshots of chats or payment alerts. Tesseract OCR extracts text automatically for review.</p>
+                <a href="/scan/screenshot" class="service-link">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-phone-volume"></i></div>
+                <h3>Call & Audio Protection</h3>
+                <p>Analyze call transcripts or voice recordings for authority impersonation and digital arrest threats.</p>
+                <a href="/scan/call" class="service-link">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-chart-line"></i></div>
+                <h3>Threat Analytics</h3>
+                <p>Track scam patterns, risk score distributions, and awareness trends in a unified security dashboard.</p>
+                <a href="/dashboard" class="service-link">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>Risk Scoring Engine</h3>
+                <p>Get a transparent 0–100 risk score with plain-English breakdowns and step-by-step safety actions.</p>
+                <a href="/scan" class="service-link">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 4. SCAN CENTER UI CARDS -->
+<section style="padding: 2rem 0 4rem 0;">
+    <div class="container">
+        <div class="glass-card" style="padding: 3rem 2rem;">
+            <div class="text-center" style="max-width: 650px; margin: 0 auto 2.5rem auto;">
+                <span class="badge-risk badge-safe" style="margin-bottom: 1rem;"><i class="fas fa-search"></i> Quick Scanner Hub</span>
+                <h2>What Do You Want To Check?</h2>
+                <p>Select your content format below to perform an instant risk assessment.</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
+                <a href="/scan/message" class="action-card">
+                    <div class="action-card-icon"><i class="fas fa-comment-dots"></i></div>
+                    <h3>💬 Message</h3>
+                    <p style="font-size: 0.88rem;">SMS, WhatsApp & Email text scanner</p>
+                    <span class="btn btn-primary btn-sm" style="margin-top: auto;">Open Scanner <i class="fas fa-arrow-right"></i></span>
+                </a>
+
+                <a href="/scan/url" class="action-card">
+                    <div class="action-card-icon"><i class="fas fa-link"></i></div>
+                    <h3>🔗 URL</h3>
+                    <p style="font-size: 0.88rem;">Web link & domain verification</p>
+                    <span class="btn btn-primary btn-sm" style="margin-top: auto;">Open Scanner <i class="fas fa-arrow-right"></i></span>
+                </a>
+
+                <a href="/scan/screenshot" class="action-card">
+                    <div class="action-card-icon"><i class="fas fa-camera"></i></div>
+                    <h3>📸 Screenshot</h3>
+                    <p style="font-size: 0.88rem;">Image OCR text extraction scanner</p>
+                    <span class="btn btn-primary btn-sm" style="margin-top: auto;">Open Scanner <i class="fas fa-arrow-right"></i></span>
+                </a>
+
+                <a href="/scan/call" class="action-card">
+                    <div class="action-card-icon"><i class="fas fa-phone-volume"></i></div>
+                    <h3>📞 Call</h3>
+                    <p style="font-size: 0.88rem;">Call transcript & audio scanner</p>
+                    <span class="btn btn-primary btn-sm" style="margin-top: auto;">Open Scanner <i class="fas fa-arrow-right"></i></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 5. APPROACH SECTION (Interactive Tabs & Accordion) -->
+<section style="padding: 3rem 0 5rem 0;">
+    <div class="container">
+        <div class="glass-card" style="padding: 3rem 2.5rem;">
+            <div class="text-center" style="max-width: 700px; margin: 0 auto 2.5rem auto;">
+                <h2>Our Approach Is Simple & Effective</h2>
+                <p>We analyze the underlying mechanisms of cyber fraud to keep you informed and safe.</p>
+            </div>
+
+            <div class="tab-header-nav">
+                <button type="button" class="tab-nav-btn approach-tab-btn active" data-target="approach1">
+                    <i class="fas fa-shield-virus"></i> Increased & Evolving Threats
+                </button>
+                <button type="button" class="tab-nav-btn approach-tab-btn" data-target="approach2">
+                    <i class="fas fa-network-wired"></i> Widening Attack Surface
+                </button>
+                <button type="button" class="tab-nav-btn approach-tab-btn" data-target="approach3">
+                    <i class="fas fa-user-lock"></i> Structural Weaknesses
+                </button>
+            </div>
+
+            <div id="approach1" class="tab-content-panel approach-panel active">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;" class="dashboard-grid">
+                    <div>
+                        <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">Evolving Cyber Fraud Tactics</h3>
+                        <p>Scammers continuously mutate their scripts—shifting from basic phishing emails to sophisticated WhatsApp KYC threats, UPI collect traps, and voice-assisted digital arrest coercion.</p>
+                        <p>ScamShield's rule engine evaluates contextual indicators like urgency, payment demands, and credential requests rather than relying solely on static blacklists.</p>
+                    </div>
+                    <div style="background: rgba(0, 210, 255, 0.05); border: 1px solid var(--border-highlight); border-radius: var(--radius-md); padding: 1.5rem;">
+                        <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;"><i class="fas fa-check-circle text-success"></i> Key Defense Mechanism</div>
+                        <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+                            <li><i class="fas fa-caret-right text-cyan"></i> Real-time keyword & phrase pattern analysis</li>
+                            <li><i class="fas fa-caret-right text-cyan"></i> Transparent 0–100 risk score breakdown</li>
+                            <li><i class="fas fa-caret-right text-cyan"></i> Actionable safety steps for high-risk alerts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="approach2" class="tab-content-panel approach-panel">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;" class="dashboard-grid">
+                    <div>
+                        <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">Multi-Channel Risk Detection</h3>
+                        <p>Modern cyber attacks don't happen in isolation—they reach victims across SMS, WhatsApp, social media, voice calls, and fake websites.</p>
+                        <p>ScamShield provides a unified scanner hub for messages, web links, screenshots, and call transcripts in one single platform.</p>
+                    </div>
+                    <div style="background: rgba(0, 210, 255, 0.05); border: 1px solid var(--border-highlight); border-radius: var(--radius-md); padding: 1.5rem;">
+                        <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;"><i class="fas fa-check-circle text-success"></i> Comprehensive Coverage</div>
+                        <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+                            <li><i class="fas fa-caret-right text-cyan"></i> Message, URL, Screenshot & Call Scanner</li>
+                            <li><i class="fas fa-caret-right text-cyan"></i> Tesseract OCR text extraction engine</li>
+                            <li><i class="fas fa-caret-right text-cyan"></i> Voice pattern & digital arrest analysis</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="approach3" class="tab-content-panel approach-panel">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;" class="dashboard-grid">
+                    <div>
+                        <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">Mitigating Social Engineering Risks</h3>
+                        <p>Most scams exploit psychological triggers—fear, urgency, greed, or trust in authority—rather than software vulnerabilities.</p>
+                        <p>ScamShield highlights specific psychological warning signs and guides users on how to respond safely.</p>
+                    </div>
+                    <div style="background: rgba(0, 210, 255, 0.05); border: 1px solid var(--border-highlight); border-radius: var(--radius-md); padding: 1.5rem;">
+                        <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;"><i class="fas fa-check-circle text-success"></i> Educational Empowerment</div>
+                        <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+                            <li><i class="fas fa-caret-right text-cyan"></i> Interactive "Spot The Scam" Quiz Simulator</li>
+                            <li><i class="fas fa-caret-right text-cyan"></i> Scam Awareness Score (0–100 🛡️) tracking</li>
+                            <li><i class="fas fa-caret-right text-cyan"></i> Comprehensive Educational Safety Guides</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 6. PLATFORM SPOTLIGHT (Single Platform to Manage Security) -->
+<section style="padding: 2rem 0 5rem 0;">
+    <div class="container">
+        <div style="display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 4rem; align-items: center;" class="spotlight-grid">
+            <!-- Left CSS 3D Shield Graphic -->
+            <div style="background: #0b1120; border: 1px solid var(--border-highlight); border-radius: var(--radius-lg); padding: 3rem 2rem; text-align: center; box-shadow: var(--shadow-glow);">
+                <div style="font-size: 4.5rem; color: var(--accent-cyan); margin-bottom: 1rem;"><i class="fas fa-shield-cat"></i></div>
+                <h3 style="margin-bottom: 0.5rem;">ScamShield Engine v1.0</h3>
+                <p style="font-size: 0.9rem;">Multi-vector cyber threat evaluation platform</p>
+            </div>
+
+            <!-- Right Content & Tabs -->
+            <div>
+                <h2>Single Platform To Manage Your Cyber Safety & Compliance</h2>
+                <p style="margin: 1rem 0 2rem 0;">Analyze suspicious content, understand your risk profile, and learn safer digital habits from one unified interface.</p>
+
+                <div class="tab-header-nav">
+                    <button type="button" class="tab-nav-btn spotlight-tab-btn active" data-target="spotlight1">Our Experience</button>
+                    <button type="button" class="tab-nav-btn spotlight-tab-btn" data-target="spotlight2">Why Us?</button>
+                    <button type="button" class="tab-nav-btn spotlight-tab-btn" data-target="spotlight3">Our Approach</button>
+                </div>
+
+                <div id="spotlight1" class="tab-content-panel spotlight-panel active">
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.85rem;">
+                        <li style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-check-circle text-success"></i> Transparent risk score calculated from 0 to 100</li>
+                        <li style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-check-circle text-success"></i> Multiple scam detection methods (Message, Link, OCR, Voice)</li>
+                        <li style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-check-circle text-success"></i> Beginner-friendly explanations suited for non-technical users</li>
+                        <li style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-check-circle text-success"></i> Privacy-conscious design with zero permanent message storage</li>
+                    </ul>
+                </div>
+
+                <div id="spotlight2" class="tab-content-panel spotlight-panel">
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.85rem;">
+                        <li style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-check-circle text-success"></i> 100% functional open-source cybersecurity platform</li>
+                        <li style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-check-circle text-success"></i> Multilingual support (English, Hindi, Hinglish)</li>
+                        <li style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-check-circle text-success"></i> Interactive Quiz Simulator with dynamic Awareness Score</li>
+                        <li style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-check-circle text-success"></i> Integrated official reporting line guidance (1930)</li>
+                    </ul>
+                </div>
+
+                <div id="spotlight3" class="tab-content-panel spotlight-panel">
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.85rem;">
+                        <li style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-check-circle text-success"></i> Rule-based transparent scoring engine</li>
+                        <li style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-check-circle text-success"></i> Modular AI Service Layer abstraction for future LLM integration</li>
+                        <li style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-check-circle text-success"></i> Tesseract OCR screenshot text extraction engine</li>
+                        <li style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-check-circle text-success"></i> SQLite scan history tracking with full CRUD controls</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 7. READ OUR LATEST SAFETY GUIDES & NEWS -->
 <section style="padding: 3rem 0 5rem 0;">
     <div class="container">
         <div class="text-center" style="max-width: 700px; margin: 0 auto 3rem auto;">
-            <h2 data-i18n="how_it_works">How ScamShield Works</h2>
-            <p>Our transparent rule-based risk engine analyzes warning signs in seconds to protect you from cyber fraud.</p>
+            <h2>Read Our Latest Safety Guides</h2>
+            <p>Educational cybersecurity advice to help you spot scams before taking action.</p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
-            <div class="glass-card text-center" style="padding: 1.75rem 1.25rem;">
-                <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--accent-cyan-glow); color: var(--accent-cyan); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; margin: 0 auto 1rem auto;">1</div>
-                <h4>Upload or Paste</h4>
-                <p style="font-size: 0.85rem; margin-top: 0.5rem;">Paste suspicious SMS, WhatsApp message, URL, screenshot, or call transcript.</p>
+        <div class="service-grid">
+            <div class="service-card">
+                <span class="badge-risk badge-verify" style="align-self: flex-start; font-size: 0.75rem;">Phishing Awareness</span>
+                <h3>5 Signs Your Bank Message Could Be Fake</h3>
+                <p>Learn how to identify fake bank SMS alerts, lookalike web links, and urgent PAN card blocking threats.</p>
+                <a href="/safety-center" class="service-link">Read Guide <i class="fas fa-arrow-right"></i></a>
             </div>
 
-            <div class="glass-card text-center" style="padding: 1.75rem 1.25rem;">
-                <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--accent-cyan-glow); color: var(--accent-cyan); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; margin: 0 auto 1rem auto;">2</div>
-                <h4>Pattern Detection</h4>
-                <p style="font-size: 0.85rem; margin-top: 0.5rem;">ScamShield scans for threats, urgent deadlines, OTP demands, and fake domains.</p>
+            <div class="service-card">
+                <span class="badge-risk badge-verify" style="align-self: flex-start; font-size: 0.75rem;">UPI Safety</span>
+                <h3>How To Identify A UPI Collect Scam</h3>
+                <p>Remember: You NEVER enter your UPI PIN to receive money. Learn how collect request scams work.</p>
+                <a href="/safety-center" class="service-link">Read Guide <i class="fas fa-arrow-right"></i></a>
             </div>
 
-            <div class="glass-card text-center" style="padding: 1.75rem 1.25rem;">
-                <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--accent-cyan-glow); color: var(--accent-cyan); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; margin: 0 auto 1rem auto;">3</div>
-                <h4>Risk Engine Score</h4>
-                <p style="font-size: 0.85rem; margin-top: 0.5rem;">The risk engine calculates a score from 0–100 and assigns a clear risk level category.</p>
-            </div>
-
-            <div class="glass-card text-center" style="padding: 1.75rem 1.25rem;">
-                <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--accent-cyan-glow); color: var(--accent-cyan); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; margin: 0 auto 1rem auto;">4</div>
-                <h4>Clear Explanation</h4>
-                <p style="font-size: 0.85rem; margin-top: 0.5rem;">Highlighted suspicious phrases and plain-English breakdown of why it is suspicious.</p>
-            </div>
-
-            <div class="glass-card text-center" style="padding: 1.75rem 1.25rem;">
-                <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--accent-cyan-glow); color: var(--accent-cyan); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; margin: 0 auto 1rem auto;">5</div>
-                <h4>What Should I Do Now?</h4>
-                <p style="font-size: 0.85rem; margin-top: 0.5rem;">Actionable, step-by-step guidance on how to safely handle or report the incident.</p>
+            <div class="service-card">
+                <span class="badge-risk badge-verify" style="align-self: flex-start; font-size: 0.75rem;">Remote Access</span>
+                <h3>Why Installing AnyDesk on Stranger Request is Dangerous</h3>
+                <p>Understand how remote control apps give scammers full access to your phone screen and banking OTPs.</p>
+                <a href="/safety-center" class="service-link">Read Guide <i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Call to Action Banner -->
-<section style="padding: 3rem 0 5rem 0;">
+<!-- 8. CTA SECTION -->
+<section style="padding: 2rem 0 5rem 0;">
     <div class="container">
-        <div class="glass-card text-center" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.12) 0%, rgba(59, 130, 246, 0.12) 100%); border-color: var(--border-highlight); padding: 3.5rem 2rem;">
-            <h2>Protect Your Digital Life Today</h2>
-            <p style="max-width: 600px; margin: 1rem auto 2rem auto;">Have a suspicious SMS, WhatsApp message, or payment request? Check it now with ScamShield before taking any action.</p>
-            <a href="/scan" class="btn btn-primary btn-lg" data-i18n="start_scan"><i class="fas fa-shield-halved"></i> Start Free Scan</a>
+        <div class="glass-card text-center" style="background: linear-gradient(135deg, rgba(0, 136, 255, 0.15) 0%, rgba(0, 210, 255, 0.15) 100%); border-color: var(--border-highlight); padding: 4rem 2rem;">
+            <h2>Start Using ScamShield Today</h2>
+            <p style="max-width: 600px; margin: 1rem auto 2rem auto;">Check suspicious messages, links, screenshots, and call transcripts before you put your money or credentials at risk.</p>
+            <a href="/scan" class="btn btn-primary btn-lg" data-i18n="start_scan">Start Free Scan <i class="fas fa-arrow-right"></i></a>
         </div>
     </div>
 </section>
