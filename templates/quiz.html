@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% set active_page = 'quiz' %}
+
+{% block title %}Spot The Scam Quiz — ScamShield{% endblock %}
+
+{% block content %}
+<section style="padding: 3rem 0;">
+    <div class="container" style="max-width: 800px;">
+        <div class="text-center" style="margin-bottom: 2.5rem;">
+            <span class="badge-risk badge-safe" style="margin-bottom: 1rem;"><i class="fas fa-gamepad"></i> Interactive Scam Simulator</span>
+            <h1>Can You Spot The Scam?</h1>
+            <p>Test your cyber safety awareness with realistic fictional scam scenarios. Earn points and raise your Scam Awareness Score!</p>
+        </div>
+
+        <!-- Quiz Container rendered by quiz.js -->
+        <div id="quizContainer">
+            <div class="glass-card text-center" style="padding: 3rem 1rem;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--accent-cyan); margin-bottom: 1rem;"></i>
+                <p>Loading Quiz Scenarios...</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+{% endblock %}
+{% endblock %}

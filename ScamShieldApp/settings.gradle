@@ -1,0 +1,2 @@
+rootProject.name = "ScamShieldApp"
+include ':app'

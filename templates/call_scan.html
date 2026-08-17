@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% set active_page = 'scan' %}
+
+{% block title %}Check Call — ScamShield{% endblock %}
+
+{% block content %}
+<section style="padding: 3rem 0;">
+    <div class="container" style="max-width: 850px;">
+        <div style="margin-bottom: 2rem;">
+            <a href="/scan" class="btn btn-secondary btn-sm" style="margin-bottom: 1rem;"><i class="fas fa-arrow-left"></i> Back to Scan Center</a>
+            <h1><i class="fas fa-phone-volume text-gradient-cyan"></i> Check Call Transcript / Audio</h1>
+            <p>Analyze call transcripts or audio files for Digital Arrest threats, authority impersonation, and remote app demands.</p>
+        </div>
+
+        <!-- Pre-fill Demo Call Examples -->
+        <div class="glass-card" style="margin-bottom: 1.5rem; padding: 1.25rem;">
+            <div style="font-weight: 600; font-size: 0.85rem; color: var(--accent-cyan); margin-bottom: 0.75rem;"><i class="fas fa-flask"></i> Sample Call Transcripts (Fictional):</div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button type="button" class="btn btn-secondary btn-sm btn-load-demo" data-demo-id="demo_digital_arrest">Digital Arrest Threat</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('callTranscript').value='Caller: Hello sir, I am calling from SBI Manager office. Your debit card is blocked. Tell me the 6-digit OTP sent to your phone immediately to unblock it.'">Bank OTP Interrogation</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('callTranscript').value='Caller: Your electricity bill is pending. Download AnyDesk app on your mobile phone right now and share the 9-digit code so we can help you pay.'">AnyDesk Download Call</button>
+            </div>
+        </div>
+
+        <form action="/api/analyze-call" method="POST" enctype="multipart/form-data" class="glass-card">
+            <!-- Mode Selector -->
+            <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+                <button type="button" id="tabTranscript" class="btn btn-primary btn-sm" onclick="showCallMode('transcript')">
+                    <i class="fas fa-file-alt"></i> Paste Transcript
+                </button>
+                <button type="button" id="tabAudio" class="btn btn-secondary btn-sm" onclick="showCallMode('audio')">
+                    <i class="fas fa-microphone"></i> Upload Audio Recording
+                </button>
+            </div>
+
+            <!-- Mode 1: Transcript Input -->
+            <div id="modeTranscript" class="form-group">
+                <div class="form-label">
+                    <span>Call Conversation / Transcript:</span>
+                    <span id="callCharCounter" class="char-counter">0 chars</span>
+                </div>
+                <textarea name="transcript" id="callTranscript" class="form-control scam-textarea" data-counter="callCharCounter" placeholder="Paste conversation transcript here (e.g. Caller: 'This is Officer Sharma from Crime Branch...')" required></textarea>
+            </div>
+
+            <!-- Mode 2: Audio File Upload -->
+            <div id="modeAudio" class="form-group" style="display: none;">
+                <label class="form-label">Upload Audio File (WAV, MP3, M4A - Max 16MB):</label>
+                <input type="file" name="audio_file" id="audioFileInput" class="form-control" accept="audio/*">
+                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
+                    <i class="fas fa-info-circle"></i> Audio files are transcribed using speech recognition engine before scam analysis.
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('callTranscript').value = '';">
+                    <i class="fas fa-eraser"></i> Clear
+                </button>
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-shield-alt"></i> Analyze Call Risk
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+function showCallMode(mode) {
+    const modeTranscript = document.getElementById('modeTranscript');
+    const modeAudio = document.getElementById('modeAudio');
+    const tabTranscript = document.getElementById('tabTranscript');
+    const tabAudio = document.getElementById('tabAudio');
+    const transcriptText = document.getElementById('callTranscript');
+
+    if (mode === 'transcript') {
+        modeTranscript.style.display = 'block';
+        modeAudio.style.display = 'none';
+        tabTranscript.className = 'btn btn-primary btn-sm';
+        tabAudio.className = 'btn btn-secondary btn-sm';
+        transcriptText.required = true;
+    } else {
+        modeTranscript.style.display = 'none';
+        modeAudio.style.display = 'block';
+        tabAudio.className = 'btn btn-primary btn-sm';
+        tabTranscript.className = 'btn btn-secondary btn-sm';
+        transcriptText.required = false;
+    }
+}
+</script>
+{% endblock %}

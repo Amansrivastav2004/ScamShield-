@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% set active_page = 'scan' %}
+
+{% block title %}Analysis Result — ScamShield{% endblock %}
+
+{% block content %}
+<section style="padding: 3rem 0;">
+    <div class="container" style="max-width: 950px;">
+        <!-- Header & Action Buttons -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <a href="/scan" class="btn btn-secondary btn-sm" style="margin-bottom: 0.5rem;"><i class="fas fa-arrow-left"></i> Scan Another Item</a>
+                <h1 style="margin: 0;">Risk Analysis Report</h1>
+            </div>
+            <div style="display: flex; gap: 0.75rem;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="window.print()"><i class="fas fa-print"></i> Print Report</button>
+                <a href="/history" class="btn btn-secondary btn-sm"><i class="fas fa-history"></i> View History</a>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 300px 1fr; gap: 2rem; align-items: start;" class="result-grid">
+            <!-- Left Side: Risk Score Meter & Summary -->
+            <div class="glass-card text-center" style="padding: 2rem 1.5rem;">
+                <div class="gauge-container" style="margin-bottom: 1rem;">
+                    <svg class="gauge-svg" viewBox="0 0 100 50">
+                        <path class="gauge-bg" d="M 10 50 A 40 40 0 0 1 90 50"></path>
+                        <path id="gaugeFillArc" class="gauge-fill" d="M 10 50 A 40 40 0 0 1 90 50"></path>
+                    </svg>
+                    <div id="gaugeScoreText" class="gauge-score-text">{{ result.score }}/100</div>
+                </div>
+
+                <!-- Risk Level Badge -->
+                {% if result.risk_level == 'HIGH RISK' %}
+                    <div class="badge-risk badge-high"><i class="fas fa-exclamation-triangle"></i> HIGH RISK</div>
+                {% elif result.risk_level == 'SUSPICIOUS' %}
+                    <div class="badge-risk badge-suspicious"><i class="fas fa-exclamation-circle"></i> SUSPICIOUS</div>
+                {% elif result.risk_level == 'NEEDS VERIFICATION' %}
+                    <div class="badge-risk badge-verify"><i class="fas fa-info-circle"></i> NEEDS VERIFICATION</div>
+                {% else %}
+                    <div class="badge-risk badge-safe"><i class="fas fa-check-circle"></i> LIKELY SAFE</div>
+                {% endif %}
+
+                <!-- Scam Category -->
+                <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                    <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Scam Classification</div>
+                    <div style="font-weight: 700; font-size: 1.1rem; color: var(--accent-cyan); margin-top: 0.25rem;">
+                        <i class="fas fa-tag"></i> {{ result.scam_type }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Detailed Breakdown -->
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- 1. Explanation Card -->
+                <div class="glass-card">
+                    <h3 style="margin-bottom: 0.75rem;"><i class="fas fa-search-dollar text-gradient-cyan"></i> Why is this suspicious?</h3>
+                    <p style="font-size: 1rem; color: var(--text-primary); line-height: 1.7;">
+                        {{ result.explanation }}
+                    </p>
+                </div>
+
+                <!-- 2. Highlighted Content with Red Flag Phrases -->
+                {% if result.highlighted_text %}
+                <div class="glass-card">
+                    <h4 style="margin-bottom: 0.75rem;"><i class="fas fa-font"></i> Content Analysis & Red Flag Highlights</h4>
+                    <div class="highlight-box">{{ result.highlighted_text | safe }}</div>
+                </div>
+                {% endif %}
+
+                <!-- 3. Warning Indicator Cards -->
+                {% if result.warning_signs %}
+                <div class="glass-card">
+                    <h4 style="margin-bottom: 1rem;"><i class="fas fa-flag text-danger"></i> Detected Warning Indicators ({{ result.warning_signs | length }})</h4>
+                    {% for sign in result.warning_signs %}
+                    <div class="warning-card">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span style="font-weight: 600; color: var(--text-primary); font-size: 0.95rem;">{{ sign }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- 4. WHAT SHOULD I DO NOW? Action Guide -->
+                <div class="glass-card" style="background: rgba(17, 24, 39, 0.9); border: 1px solid var(--border-highlight);">
+                    <h3 style="color: var(--accent-cyan); margin-bottom: 1.25rem;">
+                        <i class="fas fa-shield-cat"></i> 🚨 What Should I Do Now?
+                    </h3>
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.85rem;">
+                        {% for action in result.recommended_actions %}
+                        <li style="display: flex; align-items: start; gap: 0.75rem; font-size: 0.95rem; color: var(--text-primary);">
+                            <i class="fas fa-check-square" style="color: var(--accent-cyan); margin-top: 0.25rem;"></i>
+                            <span>{{ action }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Disclaimer Notice -->
+                <div class="disclaimer-badge text-center" style="width: 100%; font-size: 0.85rem; padding: 0.75rem;">
+                    <i class="fas fa-info-circle"></i> Results are transparent risk assessments, not 100% fraud determinations. Always verify important requests through an official source.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Animate SVG Risk Gauge on page load
+    renderRiskGauge({{ result.score }}, '{{ result.risk_level }}');
+});
+</script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% set active_page = 'safety' %}
+
+{% block title %}Safety Center — ScamShield{% endblock %}
+
+{% block content %}
+<section style="padding: 3rem 0;">
+    <div class="container">
+        <div class="text-center" style="max-width: 750px; margin: 0 auto 3rem auto;">
+            <span class="badge-risk badge-safe" style="margin-bottom: 1rem;"><i class="fas fa-graduation-cap"></i> Cyber Safety Knowledgebase</span>
+            <h1>Scam Awareness & Prevention Guides</h1>
+            <p>Simple, actionable cybersecurity advice designed to protect beginners and families from online fraud.</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div style="max-width: 600px; margin: 0 auto 3rem auto;">
+            <div style="position: relative;">
+                <input type="text" id="safetySearchInput" class="form-control" placeholder="Search safety topics (e.g. OTP, UPI, AnyDesk, Job)..." style="padding-left: 3rem; border-radius: 30px;">
+                <i class="fas fa-search" style="position: absolute; left: 1.2rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+            </div>
+        </div>
+
+        <!-- Article Topic Cards Grid -->
+        <div class="feature-grid" id="articleGrid">
+            {% for article in articles %}
+            <div class="glass-card article-card" data-title="{{ article.title | lower }}" data-category="{{ article.category | lower }}" style="display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                        <span class="badge-risk badge-verify" style="font-size: 0.75rem; padding: 0.2rem 0.6rem;">{{ article.category }}</span>
+                        <i class="fas {{ article.icon }}" style="font-size: 1.25rem; color: var(--accent-cyan);"></i>
+                    </div>
+                    <h3 style="font-size: 1.15rem; margin-bottom: 0.75rem;">{{ article.title }}</h3>
+                    <p style="font-size: 0.88rem; color: var(--text-secondary);">{{ article.summary }}</p>
+                </div>
+                <button type="button" class="btn btn-secondary btn-sm" style="margin-top: 1.5rem; align-self: flex-start;" onclick="openArticleModal('{{ article.id }}')">
+                    Read Guide <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Article Modal Popups -->
+{% for article in articles %}
+<div id="modal-{{ article.id }}" class="modal-overlay">
+    <div class="modal-content">
+        <button type="button" class="modal-close" onclick="closeModal('modal-{{ article.id }}')"><i class="fas fa-times"></i></button>
+        <span class="badge-risk badge-safe" style="font-size: 0.75rem; margin-bottom: 1rem;">{{ article.category }}</span>
+        <h2 style="margin: 0.5rem 0 1.25rem 0;">{{ article.title }}</h2>
+        <div style="font-size: 0.95rem; line-height: 1.8; color: var(--text-primary);">
+            {{ article.content | safe }}
+        </div>
+        <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1rem; display: flex; justify-content: flex-end;">
+            <button type="button" class="btn btn-primary btn-sm" onclick="closeModal('modal-{{ article.id }}')">Close Guide</button>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('safetySearchInput');
+    const cards = document.querySelectorAll('.article-card');
+
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase().trim();
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title') || '';
+                const cat = card.getAttribute('data-category') || '';
+                if (title.includes(query) || cat.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    }
+});
+
+function openArticleModal(articleId) {
+    openModal(`modal-${articleId}`);
+}
+</script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% set active_page = 'scan' %}
+
+{% block title %}Check URL — ScamShield{% endblock %}
+
+{% block content %}
+<section style="padding: 3rem 0;">
+    <div class="container" style="max-width: 850px;">
+        <div style="margin-bottom: 2rem;">
+            <a href="/scan" class="btn btn-secondary btn-sm" style="margin-bottom: 1rem;"><i class="fas fa-arrow-left"></i> Back to Scan Center</a>
+            <h1><i class="fas fa-link text-gradient-cyan"></i> Check Web Link / URL</h1>
+            <p>Analyze suspicious domain names, IP addresses, URL shorteners, and lookalike bank portals.</p>
+        </div>
+
+        <!-- Pre-fill Demo Examples -->
+        <div class="glass-card" style="margin-bottom: 1.5rem; padding: 1.25rem;">
+            <div style="font-weight: 600; font-size: 0.85rem; color: var(--accent-cyan); margin-bottom: 0.75rem;"><i class="fas fa-flask"></i> Quick Demo URLs (Fictional):</div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button type="button" class="btn btn-secondary btn-sm btn-load-demo" data-demo-id="demo_url_phish">Suspicious IP Link</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('urlInput').value='http://sbi-verify-kyc.top/login'">Spoofed Bank Domain</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('urlInput').value='https://bit.ly/3xYz1-claim-cashback'">URL Shortener</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('urlInput').value='https://www.onlinesbi.sbi'">Genuine SBI Domain</button>
+            </div>
+        </div>
+
+        <form action="/api/analyze-url" method="POST" class="glass-card">
+            <div class="form-group">
+                <label for="urlInput" class="form-label">Target URL:</label>
+                <input type="text" name="url" id="urlInput" class="form-control" placeholder="e.g. http://sbi-verify-kyc.top or http://192.168.1.1/login" required>
+            </div>
+
+            <div class="warning-card" style="margin-bottom: 1.5rem; background: rgba(245, 158, 11, 0.08); border-left-color: var(--risk-verify);">
+                <i class="fas fa-info-circle" style="color: var(--risk-verify);"></i>
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                    <strong>Threat Intelligence Disclaimer:</strong> URL analysis is heuristic unless a verified threat-intelligence service/API is connected.
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('urlInput').value = '';">
+                    <i class="fas fa-eraser"></i> Clear
+                </button>
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-search"></i> Check URL Safety
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

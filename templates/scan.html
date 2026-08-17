@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% set active_page = 'scan' %}
+
+{% block title %}Scan Center — ScamShield{% endblock %}
+
+{% block content %}
+<section style="padding: 3rem 0;">
+    <div class="container">
+        <div class="text-center" style="max-width: 700px; margin: 0 auto 3rem auto;">
+            <span class="badge-risk badge-safe" style="margin-bottom: 1rem;"><i class="fas fa-shield-alt"></i> Unified Scan Hub</span>
+            <h1 style="margin-top: 0.5rem;">What do you want to check?</h1>
+            <p>Select the type of content you want to analyze for potential scams, phishing, or cybersecurity risks.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;" class="scan-hub-grid">
+            <!-- 1. Message Scanner -->
+            <a href="/scan/message" class="action-card">
+                <div class="action-card-icon">
+                    <i class="fas fa-comment-dots"></i>
+                </div>
+                <h3>Message</h3>
+                <p>Analyze SMS, WhatsApp messages, or emails for threats, fake KYC, and sensitive credential requests.</p>
+                <span class="btn btn-primary btn-sm" style="margin-top: auto;">Open Scanner <i class="fas fa-arrow-right"></i></span>
+            </a>
+
+            <!-- 2. URL Scanner -->
+            <a href="/scan/url" class="action-card">
+                <div class="action-card-icon">
+                    <i class="fas fa-link"></i>
+                </div>
+                <h3>URL / Web Link</h3>
+                <p>Verify suspicious website links, IP addresses, shortened URLs, and lookalike bank domains.</p>
+                <span class="btn btn-primary btn-sm" style="margin-top: auto;">Open Scanner <i class="fas fa-arrow-right"></i></span>
+            </a>
+
+            <!-- 3. Screenshot Scanner -->
+            <a href="/scan/screenshot" class="action-card">
+                <div class="action-card-icon">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <h3>Screenshot</h3>
+                <p>Upload screenshots of chats or payment screens. Automatically extracts text using Tesseract OCR.</p>
+                <span class="btn btn-primary btn-sm" style="margin-top: auto;">Open Scanner <i class="fas fa-arrow-right"></i></span>
+            </a>
+
+            <!-- 4. Call / Audio Scanner -->
+            <a href="/scan/call" class="action-card">
+                <div class="action-card-icon">
+                    <i class="fas fa-phone-volume"></i>
+                </div>
+                <h3>Call / Audio</h3>
+                <p>Analyze call transcripts or uploaded voice recordings for authority impersonation and digital arrest threats.</p>
+                <span class="btn btn-primary btn-sm" style="margin-top: auto;">Open Scanner <i class="fas fa-arrow-right"></i></span>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

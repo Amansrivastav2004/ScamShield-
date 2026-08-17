@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% set active_page = 'dashboard' %}
+
+{% block title %}Dashboard — ScamShield{% endblock %}
+
+{% block head %}
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<section style="padding: 3rem 0;">
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h1><i class="fas fa-chart-pie text-gradient-cyan"></i> Security Analytics Dashboard</h1>
+                <p>Track your scan history, threat distributions, and Scam Awareness Score in real-time.</p>
+            </div>
+            <a href="/scan" class="btn btn-primary"><i class="fas fa-plus"></i> New Scan</a>
+        </div>
+
+        <!-- Metric Counter Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; margin-bottom: 2.5rem;">
+            <div class="glass-card text-center" style="padding: 1.5rem 1rem;">
+                <div style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Total Scans</div>
+                <div style="font-size: 2.5rem; font-weight: 800; color: var(--text-primary); margin-top: 0.25rem;">{{ stats.total_scans }}</div>
+            </div>
+
+            <div class="glass-card text-center" style="padding: 1.5rem 1rem; border-color: rgba(239, 68, 68, 0.3);">
+                <div style="font-size: 0.85rem; color: var(--risk-high); text-transform: uppercase;">High Risk</div>
+                <div style="font-size: 2.5rem; font-weight: 800; color: var(--risk-high); margin-top: 0.25rem;">{{ stats.risk_counts['HIGH RISK'] }}</div>
+            </div>
+
+            <div class="glass-card text-center" style="padding: 1.5rem 1rem; border-color: rgba(249, 115, 22, 0.3);">
+                <div style="font-size: 0.85rem; color: var(--risk-suspicious); text-transform: uppercase;">Suspicious</div>
+                <div style="font-size: 2.5rem; font-weight: 800; color: var(--risk-suspicious); margin-top: 0.25rem;">{{ stats.risk_counts['SUSPICIOUS'] }}</div>
+            </div>
+
+            <div class="glass-card text-center" style="padding: 1.5rem 1rem; border-color: rgba(16, 185, 129, 0.3);">
+                <div style="font-size: 0.85rem; color: var(--risk-safe); text-transform: uppercase;">Likely Safe</div>
+                <div style="font-size: 2.5rem; font-weight: 800; color: var(--risk-safe); margin-top: 0.25rem;">{{ stats.risk_counts['LIKELY SAFE'] }}</div>
+            </div>
+
+            <div class="glass-card text-center" style="padding: 1.5rem 1rem; background: rgba(6, 182, 212, 0.1); border-color: var(--border-highlight);">
+                <div style="font-size: 0.85rem; color: var(--accent-cyan); text-transform: uppercase;">Awareness Score</div>
+                <div style="font-size: 2.5rem; font-weight: 800; color: var(--accent-cyan); margin-top: 0.25rem;">{{ stats.awareness_score }}<span style="font-size: 1.2rem;">/100 🛡️</span></div>
+            </div>
+        </div>
+
+        <!-- Chart.js Visualizations Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2.5rem;" class="dashboard-grid">
+            <div class="glass-card">
+                <h3 style="margin-bottom: 1.25rem;"><i class="fas fa-chart-pie"></i> Risk Level Distribution</h3>
+                <div style="height: 260px; position: relative;">
+                    <canvas id="riskDistributionChart"></canvas>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <h3 style="margin-bottom: 1.25rem;"><i class="fas fa-chart-bar"></i> Top Scam Categories Detected</h3>
+                <div style="height: 260px; position: relative;">
+                    <canvas id="scamCategoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Scans Table -->
+        <div class="glass-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3><i class="fas fa-history"></i> Recent Scan Activity</h3>
+                <a href="/history" class="btn btn-secondary btn-sm">View Full History <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            {% if stats.recent_scans %}
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">
+                            <th style="padding: 0.75rem 1rem;">Date</th>
+                            <th style="padding: 0.75rem 1rem;">Type</th>
+                            <th style="padding: 0.75rem 1rem;">Category</th>
+                            <th style="padding: 0.75rem 1rem;">Risk Score</th>
+                            <th style="padding: 0.75rem 1rem;">Risk Level</th>
+                            <th style="padding: 0.75rem 1rem; text-align: right;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for scan in stats.recent_scans %}
+                        <tr id="scan-row-{{ scan.id }}" style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 1rem; color: var(--text-secondary);">{{ scan.created_at[:16] }}</td>
+                            <td style="padding: 1rem; text-transform: capitalize;"><strong>{{ scan.scan_type }}</strong></td>
+                            <td style="padding: 1rem; color: var(--accent-cyan); font-weight: 600;">{{ scan.scam_category }}</td>
+                            <td style="padding: 1rem; font-weight: 800; font-family: var(--font-heading);">{{ scan.risk_score }}/100</td>
+                            <td style="padding: 1rem;">
+                                {% if scan.risk_level == 'HIGH RISK' %}
+                                    <span class="badge-risk badge-high" style="font-size: 0.75rem; padding: 0.2rem 0.6rem;">HIGH RISK</span>
+                                {% elif scan.risk_level == 'SUSPICIOUS' %}
+                                    <span class="badge-risk badge-suspicious" style="font-size: 0.75rem; padding: 0.2rem 0.6rem;">SUSPICIOUS</span>
+                                {% elif scan.risk_level == 'NEEDS VERIFICATION' %}
+                                    <span class="badge-risk badge-verify" style="font-size: 0.75rem; padding: 0.2rem 0.6rem;">VERIFY</span>
+                                {% else %}
+                                    <span class="badge-risk badge-safe" style="font-size: 0.75rem; padding: 0.2rem 0.6rem;">SAFE</span>
+                                {% endif %}
+                            </td>
+                            <td style="padding: 1rem; text-align: right;">
+                                <a href="/history/{{ scan.id }}" class="btn btn-secondary btn-sm"><i class="fas fa-eye"></i> Details</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center" style="padding: 2rem 0; color: var(--text-muted);">
+                <i class="fas fa-inbox" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>
+                <p>No recent scan history available. Start a new scan above!</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    initDashboardCharts({
+        risk_counts: {{ stats.risk_counts | tojson }},
+        categories: {{ stats.categories | tojson }}
+    });
+});
+</script>
+{% endblock %}
+{% endblock %}

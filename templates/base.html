@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ScamShield — Don't Trust It. Check It.{% endblock %}</title>
+    <meta name="description" content="ScamShield is an AI-powered Cyber Safety & Scam Awareness Platform. Analyze suspicious messages, links, screenshots, and call transcripts for potential fraud.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- PWA & Mobile App Support -->
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#06b6d4">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ScamShield">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    
+    <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/static/sw.js').catch(err => console.log('SW registration failed:', err));
+      });
+    }
+    </script>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <!-- Top Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="/" class="nav-logo">
+                <i class="fas fa-shield-halved"></i>
+                <span>Scam<span class="text-gradient-cyan">Shield</span></span>
+            </a>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/" class="nav-link {% if active_page == 'home' %}active{% endif %}" data-i18n="nav_home">Home</a></li>
+                <li><a href="/scan" class="nav-link {% if active_page == 'scan' %}active{% endif %}" data-i18n="nav_scan">Scan</a></li>
+                <li><a href="/dashboard" class="nav-link {% if active_page == 'dashboard' %}active{% endif %}" data-i18n="nav_dashboard">Dashboard</a></li>
+                <li><a href="/history" class="nav-link {% if active_page == 'history' %}active{% endif %}" data-i18n="nav_history">History</a></li>
+                <li><a href="/quiz" class="nav-link {% if active_page == 'quiz' %}active{% endif %}" data-i18n="nav_quiz">Quiz</a></li>
+                <li><a href="/safety-center" class="nav-link {% if active_page == 'safety' %}active{% endif %}" data-i18n="nav_safety">Safety Center</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <!-- Multilingual Selector -->
+                <div class="lang-selector">
+                    <button class="lang-btn" id="langBtn">
+                        <i class="fas fa-globe"></i>
+                        <span id="currentLangText">🇬🇧 EN</span>
+                        <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
+                    </button>
+                    <div class="lang-dropdown" id="langDropdown">
+                        <button class="lang-option" onclick="setLanguage('en')">🇬🇧 English</button>
+                        <button class="lang-option" onclick="setLanguage('hi')">🇮🇳 हिंदी</button>
+                        <button class="lang-option" onclick="setLanguage('hinglish')">🇮🇳 Hinglish</button>
+                    </div>
+                </div>
+
+                <a href="/scan" class="btn btn-primary btn-sm" data-i18n="start_scan">
+                    <i class="fas fa-search"></i> Start Free Scan
+                </a>
+
+                <button class="mobile-toggle" id="mobileToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Body Content -->
+    <main class="main-wrapper">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Global Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="nav-logo">
+                        <i class="fas fa-shield-halved"></i>
+                        <span>Scam<span class="text-gradient-cyan">Shield</span></span>
+                    </a>
+                    <p data-i18n="hero_subtitle">Scan suspicious messages, links, screenshots, and call transcripts before they put your money or personal information at risk.</p>
+                </div>
+
+                <div class="footer-col">
+                    <h4 data-i18n="nav_scan">Scanners</h4>
+                    <ul class="footer-links">
+                        <li><a href="/scan/message"><i class="fas fa-comment-dots"></i> Message Scanner</a></li>
+                        <li><a href="/scan/url"><i class="fas fa-link"></i> URL Checker</a></li>
+                        <li><a href="/scan/screenshot"><i class="fas fa-camera"></i> Screenshot OCR</a></li>
+                        <li><a href="/scan/call"><i class="fas fa-phone"></i> Call Analyzer</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Platform</h4>
+                    <ul class="footer-links">
+                        <li><a href="/dashboard">Analytics Dashboard</a></li>
+                        <li><a href="/history">Scan History</a></li>
+                        <li><a href="/quiz">Spot The Scam Quiz</a></li>
+                        <li><a href="/safety-center">Safety Center</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Privacy & Security</h4>
+                    <ul class="footer-links">
+                        <li><span class="disclaimer-badge"><i class="fas fa-shield-alt"></i> Safe & Private</span></li>
+                        <li style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
+                            ScamShield does not store sensitive personal messages or credentials. All calculations are transparent risk assessments.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>© 2026 ScamShield. All rights reserved. "Don't Trust It. Check It."</div>
+                <div class="disclaimer-badge" data-i18n="disclaimer_notice">Results are transparent risk assessments, not 100% fraud guarantees.</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Global JS Scripts -->
+    <script src="{{ url_for('static', filename='js/language.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/scan.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

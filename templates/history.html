@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% set active_page = 'history' %}
+
+{% block title %}Scan History — ScamShield{% endblock %}
+
+{% block content %}
+<section style="padding: 3rem 0;">
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h1><i class="fas fa-history text-gradient-cyan"></i> Scan History</h1>
+                <p>Search, filter, and review past risk analysis records saved in your local database.</p>
+            </div>
+            <a href="/scan" class="btn btn-primary"><i class="fas fa-plus"></i> New Scan</a>
+        </div>
+
+        <!-- Search & Filter Controls Bar -->
+        <div class="glass-card" style="margin-bottom: 2rem; padding: 1.25rem;">
+            <form method="GET" action="/history" style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 1rem; align-items: center;">
+                <div>
+                    <input type="text" name="search" class="form-control" placeholder="Search by category, summary or keyword..." value="{{ search }}">
+                </div>
+                <div>
+                    <select name="filter_risk" class="form-control">
+                        <option value="">All Risk Levels</option>
+                        <option value="HIGH RISK" {% if filter_risk == 'HIGH RISK' %}selected{% endif %}>🔴 High Risk</option>
+                        <option value="SUSPICIOUS" {% if filter_risk == 'SUSPICIOUS' %}selected{% endif %}>🟠 Suspicious</option>
+                        <option value="NEEDS VERIFICATION" {% if filter_risk == 'NEEDS VERIFICATION' %}selected{% endif %}>🟡 Needs Verification</option>
+                        <option value="LIKELY SAFE" {% if filter_risk == 'LIKELY SAFE' %}selected{% endif %}>🟢 Likely Safe</option>
+                    </select>
+                </div>
+                <div>
+                    <select name="sort_by" class="form-control">
+                        <option value="newest" {% if sort_by == 'newest' %}selected{% endif %}>Newest First</option>
+                        <option value="oldest" {% if sort_by == 'oldest' %}selected{% endif %}>Oldest First</option>
+                        <option value="risk_high" {% if sort_by == 'risk_high' %}selected{% endif %}>Highest Risk First</option>
+                        <option value="risk_low" {% if sort_by == 'risk_low' %}selected{% endif %}>Lowest Risk First</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-filter"></i> Filter</button>
+                    <a href="/history" class="btn btn-secondary"><i class="fas fa-redo"></i> Reset</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- History Results Table -->
+        <div class="glass-card">
+            {% if scans %}
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">
+                            <th style="padding: 0.85rem 1rem;">Date</th>
+                            <th style="padding: 0.85rem 1rem;">Type</th>
+                            <th style="padding: 0.85rem 1rem;">Category</th>
+                            <th style="padding: 0.85rem 1rem;">Risk Score</th>
+                            <th style="padding: 0.85rem 1rem;">Risk Level</th>
+                            <th style="padding: 0.85rem 1rem;">Summary</th>
+                            <th style="padding: 0.85rem 1rem; text-align: right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for scan in scans %}
+                        <tr id="scan-row-{{ scan.id }}" style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 1rem; color: var(--text-secondary); white-space: nowrap;">{{ scan.created_at[:16] }}</td>
+                            <td style="padding: 1rem; text-transform: capitalize;"><strong>{{ scan.scan_type }}</strong></td>
+                            <td style="padding: 1rem; color: var(--accent-cyan); font-weight: 600;">{{ scan.scam_category }}</td>
+                            <td style="padding: 1rem; font-weight: 800; font-family: var(--font-heading);">{{ scan.risk_score }}/100</td>
+                            <td style="padding: 1rem;">
+                                {% if scan.risk_level == 'HIGH RISK' %}
+                                    <span class="badge-risk badge-high" style="font-size: 0.75rem; padding: 0.2rem 0.6rem;">HIGH RISK</span>
+                                {% elif scan.risk_level == 'SUSPICIOUS' %}
+                                    <span class="badge-risk badge-suspicious" style="font-size: 0.75rem; padding: 0.2rem 0.6rem;">SUSPICIOUS</span>
+                                {% elif scan.risk_level == 'NEEDS VERIFICATION' %}
+                                    <span class="badge-risk badge-verify" style="font-size: 0.75rem; padding: 0.2rem 0.6rem;">VERIFY</span>
+                                {% else %}
+                                    <span class="badge-risk badge-safe" style="font-size: 0.75rem; padding: 0.2rem 0.6rem;">SAFE</span>
+                                {% endif %}
+                            </td>
+                            <td style="padding: 1rem; color: var(--text-secondary); max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                {{ scan.input_summary }}
+                            </td>
+                            <td style="padding: 1rem; text-align: right; white-space: nowrap;">
+                                <a href="/history/{{ scan.id }}" class="btn btn-secondary btn-sm" title="View Details"><i class="fas fa-eye"></i></a>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteScanHistoryItem({{ scan.id }})" title="Delete Record"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center" style="padding: 3rem 1rem; color: var(--text-muted);">
+                <i class="fas fa-folder-open" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <h3>No Scan History Found</h3>
+                <p>No scans match your filter criteria or history is currently empty.</p>
+                <a href="/scan" class="btn btn-primary" style="margin-top: 1rem;"><i class="fas fa-search"></i> Perform a Scan</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
+{% endblock %}

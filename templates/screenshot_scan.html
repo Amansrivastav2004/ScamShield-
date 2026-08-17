@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% set active_page = 'scan' %}
+
+{% block title %}Scan Screenshot — ScamShield{% endblock %}
+
+{% block content %}
+<section style="padding: 3rem 0;">
+    <div class="container" style="max-width: 850px;">
+        <div style="margin-bottom: 2rem;">
+            <a href="/scan" class="btn btn-secondary btn-sm" style="margin-bottom: 1rem;"><i class="fas fa-arrow-left"></i> Back to Scan Center</a>
+            <h1><i class="fas fa-camera text-gradient-cyan"></i> Scan Screenshot (OCR)</h1>
+            <p>Upload a screenshot of WhatsApp messages, SMS, or payment alerts. Tesseract OCR extracts text for review before risk analysis.</p>
+        </div>
+
+        <div class="glass-card" style="margin-bottom: 1.5rem;">
+            <div id="screenshotDropzone" class="dropzone">
+                <i class="fas fa-cloud-upload-alt dropzone-icon"></i>
+                <div>
+                    <strong style="font-size: 1.1rem; color: var(--text-primary);">Drag & Drop screenshot here</strong>
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">or click to browse files (PNG, JPG, WEBP - Max 16MB)</div>
+                </div>
+                <input type="file" id="screenshotFileInput" accept="image/*" style="display: none;">
+            </div>
+
+            <!-- Preview & OCR Status Container -->
+            <div id="imagePreviewContainer" style="display: none; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+                <div style="display: grid; grid-template-columns: 180px 1fr; gap: 1.5rem; align-items: start;">
+                    <div>
+                        <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem;">Uploaded Image:</div>
+                        <img id="imagePreview" src="" alt="Screenshot preview" style="width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border-color); object-fit: contain; max-height: 220px;">
+                    </div>
+
+                    <div>
+                        <div id="ocrStatus" style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--accent-cyan);">
+                            <i class="fas fa-spinner fa-spin"></i> Extracting text...
+                        </div>
+
+                        <form action="/api/analyze-screenshot" method="POST">
+                            <div class="form-group" style="margin-bottom: 1rem;">
+                                <label for="ocrExtractedText" class="form-label">
+                                    <span>Extracted Text (Review & Edit if needed):</span>
+                                </label>
+                                <textarea name="extracted_text" id="ocrExtractedText" class="form-control" style="min-height: 140px; font-family: monospace; font-size: 0.9rem;" placeholder="Extracted text will appear here..." required></textarea>
+                            </div>
+
+                            <button type="submit" id="btnAnalyzeScreenshot" class="btn btn-primary btn-lg" style="width: 100%; justify-content: center;">
+                                <i class="fas fa-shield-alt"></i> Run Scam Analysis on Extracted Text
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="font-size: 0.85rem; color: var(--text-muted); text-align: center;">
+            <i class="fas fa-lock"></i> Screenshots are processed securely in memory and temporary files are automatically cleaned up.
+        </div>
+    </div>
+</section>
+{% endblock %}
