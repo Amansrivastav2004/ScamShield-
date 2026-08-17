@@ -23,7 +23,7 @@ from utils.helpers import (
 )
 
 # Initialize Flask Application
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='/static')
 app.secret_key = os.getenv('SECRET_KEY', 'scamshield_super_secret_cyber_security_key_2026')
 
 if os.getenv('VERCEL'):
