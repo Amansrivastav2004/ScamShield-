@@ -7,7 +7,7 @@
   "rewrites": [
     {
       "source": "/((?!static/).*)",
-      "destination": "/api/index"
+      "destination": "/api/index.py"
     }
   ]
 }

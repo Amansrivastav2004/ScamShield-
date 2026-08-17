@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}ScamShield — Don't Trust It. Check It.{% endblock %}</title>
+    <title>{% block title %}ScamShield — Protecting Your Information & Money From Cyber Scams{% endblock %}</title>
     <meta name="description" content="ScamShield is an AI-powered Cyber Safety & Scam Awareness Platform. Analyze suspicious messages, links, screenshots, and call transcripts for potential fraud.">
     
     <!-- Google Fonts -->
@@ -16,7 +16,7 @@
     
     <!-- PWA & Mobile App Support -->
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-    <meta name="theme-color" content="#06b6d4">
+    <meta name="theme-color" content="#00d2ff">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -41,8 +41,8 @@
     <header class="navbar">
         <div class="container nav-container">
             <a href="/" class="nav-logo">
-                <i class="fas fa-shield-halved"></i>
-                <span>Scam<span class="text-gradient-cyan">Shield</span></span>
+                <i class="fas fa-shield-cat"></i>
+                <span>Scam<span class="text-gradient">Shield</span></span>
             </a>
 
             <ul class="nav-links" id="navLinks">
@@ -70,7 +70,7 @@
                 </div>
 
                 <a href="/scan" class="btn btn-primary btn-sm" data-i18n="start_scan">
-                    <i class="fas fa-search"></i> Start Free Scan
+                    Start Free Scan <i class="fas fa-arrow-right"></i>
                 </a>
 
                 <button class="mobile-toggle" id="mobileToggle">
@@ -94,8 +94,8 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <a href="/" class="nav-logo">
-                        <i class="fas fa-shield-halved"></i>
-                        <span>Scam<span class="text-gradient-cyan">Shield</span></span>
+                        <i class="fas fa-shield-cat"></i>
+                        <span>Scam<span class="text-gradient">Shield</span></span>
                     </a>
                     <p data-i18n="hero_subtitle">Scan suspicious messages, links, screenshots, and call transcripts before they put your money or personal information at risk.</p>
                 </div>
@@ -103,17 +103,17 @@
                 <div class="footer-col">
                     <h4 data-i18n="nav_scan">Scanners</h4>
                     <ul class="footer-links">
-                        <li><a href="/scan/message"><i class="fas fa-comment-dots"></i> Message Scanner</a></li>
-                        <li><a href="/scan/url"><i class="fas fa-link"></i> URL Checker</a></li>
+                        <li><a href="/scan/message"><i class="fas fa-comment-dots"></i> Message Security</a></li>
+                        <li><a href="/scan/url"><i class="fas fa-link"></i> Link Verification</a></li>
                         <li><a href="/scan/screenshot"><i class="fas fa-camera"></i> Screenshot OCR</a></li>
-                        <li><a href="/scan/call"><i class="fas fa-phone"></i> Call Analyzer</a></li>
+                        <li><a href="/scan/call"><i class="fas fa-phone-volume"></i> Call Protection</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-col">
                     <h4>Platform</h4>
                     <ul class="footer-links">
-                        <li><a href="/dashboard">Analytics Dashboard</a></li>
+                        <li><a href="/dashboard">Threat Analytics Dashboard</a></li>
                         <li><a href="/history">Scan History</a></li>
                         <li><a href="/quiz">Spot The Scam Quiz</a></li>
                         <li><a href="/safety-center">Safety Center</a></li>
@@ -133,7 +133,7 @@
 
             <div class="footer-bottom">
                 <div>© 2026 ScamShield. All rights reserved. "Don't Trust It. Check It."</div>
-                <div class="disclaimer-badge" data-i18n="disclaimer_notice">Results are transparent risk assessments, not 100% fraud guarantees.</div>
+                <div class="disclaimer-badge" data-i18n="disclaimer_notice">Results are transparent risk assessments, not 100% fraud determinations.</div>
             </div>
         </div>
     </footer>
