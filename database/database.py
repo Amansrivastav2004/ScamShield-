@@ -3,14 +3,23 @@ import json
 import os
 import requests
 
-# Detect Vercel / Serverless Environment
-IS_SERVERLESS = bool(os.getenv('VERCEL') or os.getenv('AWS_LAMBDA_FUNCTION_NAME') or os.getenv('SERVERLESS'))
-if IS_SERVERLESS:
+def can_write_to_dir(d):
+    try:
+        testfile = os.path.join(d, '.write_test')
+        with open(testfile, 'w') as f:
+            f.write('1')
+        os.remove(testfile)
+        return True
+    except Exception:
+        return False
+
+DB_DIR = os.path.dirname(__file__)
+if os.getenv('VERCEL') or os.getenv('AWS_LAMBDA_FUNCTION_NAME') or os.getenv('SERVERLESS') or not can_write_to_dir(DB_DIR):
     DB_PATH = '/tmp/scamshield.db'
 else:
-    DB_PATH = os.path.join(os.path.dirname(__file__), 'scamshield.db')
+    DB_PATH = os.path.join(DB_DIR, 'scamshield.db')
 
-SCHEMA_PATH = os.path.join(os.path.dirname(__file__), 'schema.sql')
+SCHEMA_PATH = os.path.join(DB_DIR, 'schema.sql')
 
 # Cloudflare D1 Environment Configuration
 CLOUDFLARE_D1_ACCOUNT_ID = os.getenv('CLOUDFLARE_D1_ACCOUNT_ID')
