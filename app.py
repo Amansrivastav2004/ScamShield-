@@ -1,6 +1,7 @@
 import os
 import re
 import json
+import io
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
@@ -27,12 +28,23 @@ app.secret_key = os.getenv('SECRET_KEY', 'scamshield_super_secret_cyber_security
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB Max Upload Limit
 
-# Ensure Uploads folder exists
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+# Ensure Uploads folder exists locally (ignored if read-only filesystem)
+try:
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+except Exception:
+    pass
 
 # Initialize Database Schema on Start
 with app.app_context():
     init_db()
+
+# Security Headers & CORS Middleware
+@app.after_request
+def add_security_headers(response):
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    return response
 
 # Helper to format text highlighting for red flags
 def apply_phrase_highlights(text, suspicious_phrases):
@@ -146,11 +158,9 @@ def api_analyze_message():
         flash("Please enter message text to analyze.", "error")
         return redirect(url_for('scan_message_page'))
 
-    # Run AI Service Adapter Analysis
     result = ai_service.analyze_text(content)
     
-    # Save to SQLite Database
-    scan_id = save_scan(
+    save_scan(
         scan_type='message',
         risk_score=result['score'],
         risk_level=result['risk_level'],
@@ -204,7 +214,7 @@ def api_analyze_url():
 
 @app.route('/api/extract-ocr', methods=['POST'])
 def api_extract_ocr():
-    """Upload Screenshot & Extract OCR Text Endpoint"""
+    """Upload Screenshot & Extract OCR Text Endpoint (In-Memory Processing)"""
     if 'image' not in request.files:
         return jsonify({'success': False, 'error': 'No image file uploaded'}), 400
 
@@ -216,19 +226,12 @@ def api_extract_ocr():
         return jsonify({'success': False, 'error': 'Invalid file format. Please upload PNG, JPG, or WEBP.'}), 400
 
     filename = secure_filename(file.filename)
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    file.save(filepath)
-
-    try:
-        # Extract text via Tesseract / Fallback OCR
-        extracted_text = extract_text_from_image(filepath)
-    finally:
-        # Clean up temporary uploaded file
-        if os.path.exists(filepath):
-            try:
-                os.remove(filepath)
-            except Exception:
-                pass
+    
+    # Process image in-memory via BytesIO to eliminate ephemeral disk dependency
+    file_bytes = file.read()
+    image_stream = io.BytesIO(file_bytes)
+    
+    extracted_text = extract_text_from_image(image_stream, filename_hint=filename)
 
     return jsonify({
         'success': True,
@@ -270,21 +273,12 @@ def api_analyze_call():
     """Analyze Call Transcript or Audio File Endpoint"""
     transcript = sanitize_input(request.form.get('transcript', ''))
     
-    # Handle Audio File Upload if present
+    # Handle Audio File Upload if present (in-memory buffer stream)
     if 'audio_file' in request.files and request.files['audio_file'].filename != '':
         audio_file = request.files['audio_file']
         if allowed_file(audio_file.filename, 'audio'):
             filename = secure_filename(audio_file.filename)
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            audio_file.save(filepath)
-            try:
-                transcript = transcribe_audio_file(filepath)
-            finally:
-                if os.path.exists(filepath):
-                    try:
-                        os.remove(filepath)
-                    except Exception:
-                        pass
+            transcript = transcribe_audio_file(filename)
 
     if not transcript:
         flash("Please provide a call transcript or audio recording.", "error")
@@ -345,7 +339,7 @@ def api_delete_history(scan_id):
     success = delete_scan_by_id(scan_id)
     if success:
         return jsonify({'success': True})
-    return jsonify({'success': False, 'error': 'Item not found'}), 44
+    return jsonify({'success': False, 'error': 'Item not found'}), 404
 
 # ==============================================================================
 # ERROR HANDLERS
@@ -380,5 +374,6 @@ def internal_error(error):
 # Server Entry Point
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
+    debug_mode = os.getenv('DEBUG', 'False').lower() == 'true'
     print(f"[ScamShield] Server running on http://127.0.0.1:{port}")
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=debug_mode)

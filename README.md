@@ -7,184 +7,142 @@ ScamShield is a complete, production-grade cybersecurity platform built to help 
 
 ---
 
-## 🌟 Key Features
-
-1. **Unified Scan Center**:
-   - **💬 Message Scanner**: Detects fake KYC warnings, urgent payment demands, task scams, lottery claims, and credential requests.
-   - **🔗 URL Checker**: Performs heuristic analysis on domain lookalikes, raw IP addresses, URL shorteners, missing HTTPS, and high-risk TLDs.
-   - **📸 Screenshot Scanner (OCR)**: Uploads screenshots of chats or payment alerts, extracts text via **Tesseract OCR**, allows user text review/editing, and runs risk analysis.
-   - **📞 Call / Audio Analyzer**: Detects authority impersonation (Police/CBI/TRAI), fake "Digital Arrest" threats, and remote access app demands (AnyDesk/TeamViewer).
-
-2. **Transparent Risk Engine**:
-   - Scores content from **0 to 100**.
-   - Categorizes risk levels:
-     - 🟢 **LIKELY SAFE** (0–24)
-     - 🟡 **NEEDS VERIFICATION** (25–49)
-     - 🟠 **SUSPICIOUS** (50–74)
-     - 🔴 **HIGH RISK** (75–100)
-   - Highlights red-flag suspicious text snippets directly inside the user content.
-   - Clear disclaimer: *Results are risk assessments, not 100% fraud guarantees.*
-
-3. **🚨 "What Should I Do Now?" Guidance**:
-   - Context-sensitive, step-by-step action guides tailored to specific scam categories (KYC, UPI, Job, Remote Access, Impersonation).
-   - Direct helpline reminders (1930 / cybercrime.gov.in).
-
-4. **Analytics Dashboard**:
-   - Visualized via **Chart.js**: Risk distribution pie chart, top scam categories bar chart, total scans counter, and recent scan logs.
-
-5. **Scan History**:
-   - SQLite-backed history tracking with search, risk filtering, sorting, view modal, and single/bulk record deletion.
-
-6. **"Can You Spot The Scam?" Interactive Quiz Simulator**:
-   - Multi-difficulty quiz questions with instant feedback and explanations.
-   - Recalculates and tracks your **Scam Awareness Score (0–100 🛡️)**.
-
-7. **Educational Safety Center**:
-   - Knowledgebase covering OTP safety, UPI QR codes, Phishing links, Digital Arrest scams, WFH job scams, and AnyDesk remote access risks.
-
-8. **Multilingual Support**:
-   - Instant UI language switching between **English**, **Hindi (हिंदी)**, and **Hinglish**.
-
----
-
-## 🛠️ Technology Stack
-
-- **Frontend**: HTML5, Vanilla CSS3 (Custom Design System, Glassmorphism, Dark Theme), Vanilla JavaScript (ES6+).
-- **Backend**: Python 3.12, Flask.
-- **Database**: SQLite3.
-- **Charts**: Chart.js.
-- **OCR Engine**: Tesseract OCR (`pytesseract`, PIL/Pillow).
-- **Architecture**: Modular Service Layer (`AIServiceAdapter`).
-
----
-
-## 📁 Project Architecture & Folder Structure
+## ☁️ Cloudflare Deployment Architecture
 
 ```
-ScamShield/
-│
-├── app.py                      # Flask Application Factory & Route Handlers
-├── requirements.txt            # Python Dependencies
-├── README.md                   # Technical Documentation
-├── .env.example                # Environment Variable Template
-├── .gitignore                  # Git Ignore Rules
-│
-├── database/
-│   ├── database.py             # SQLite Connection Manager & Analytics Helpers
-│   ├── schema.sql              # Database Tables & Index Definitions
-│   └── scamshield.db           # SQLite Database Storage
-│
-├── templates/
-│   ├── base.html               # Master Layout with Navbar & Footer
-│   ├── index.html              # Landing Page
-│   ├── scan.html               # Unified Scan Center Hub
-│   ├── message_scan.html       # Message Scanner UI
-│   ├── url_scan.html           # URL Scanner UI
-│   ├── screenshot_scan.html    # Screenshot OCR Upload & Edit UI
-│   ├── call_scan.html          # Call Transcript & Audio Upload UI
-│   ├── result.html             # Animated Risk Meter & Analysis Report Page
-│   ├── dashboard.html          # Chart.js Analytics Dashboard
-│   ├── history.html            # SQLite Scan History Page
-│   ├── quiz.html               # Interactive Quiz Simulator
-│   └── safety_center.html      # Educational Knowledgebase
-│
-├── static/
-│   ├── css/
-│   │   ├── style.css           # Core Design System, Theme Tokens & Typography
-│   │   ├── components.css      # Buttons, Risk Gauges, Modals, Toast Styles
-│   │   └── responsive.css      # Mobile, Tablet & Desktop Responsive Rules
-│   │
-│   └── js/
-│       ├── main.js             # Global Toast & Modal Controllers
-│       ├── scan.js             # Form AJAX & SVG Gauge Renderer
-│       ├── dashboard.js        # Chart.js Dashboard Visualizations
-│       ├── quiz.js             # Quiz Game Engine & Awareness Score Sync
-│       └── language.js         # Multilingual Translator (EN, HI, Hinglish)
-│
-├── uploads/                    # Temporary Secure Upload Storage
-│
-├── utils/
-│   ├── risk_engine.py          # Rule-Based Risk Scoring Logic & Recommendations
-│   ├── message_analyzer.py     # SMS, WhatsApp & Email Indicator Extractor
-│   ├── url_analyzer.py         # Domain Heuristics & Link Analyzer
-│   ├── ocr.py                  # Tesseract OCR & Fallback Text Extractor
-│   ├── audio_transcriber.py    # Call Transcript & Audio Scam Pattern Detector
-│   ├── ai_service.py           # AI Service Layer Abstraction Adapter
-│   └── helpers.py              # File Validation, Demo Data Loader & Quiz Data
-│
-└── tests/
-    └── test_scamshield.py      # Automated Unit & Route Test Suite
+                       ┌─────────────────────────────────────┐
+                       │          User Browser / App         │
+                       └──────────────────┬──────────────────┘
+                                          │
+                                          ▼
+                       ┌─────────────────────────────────────┐
+                       │        Cloudflare Global CDN        │
+                       │     (Pages / Workers Edge Rules)    │
+                       └──────────┬────────────────┬─────────┘
+                                  │                │
+                    Static Assets │                │ API / WSGI Requests
+                                  ▼                ▼
+                       ┌────────────────┐ ┌──────────────────┐
+                       │ Static Assets  │ │ Python WSGI      │
+                       │  (/static/*)   │ │ Worker Engine    │
+                       └────────────────┘ └────────┬─────────┘
+                                                   │
+                                ┌──────────────────┼──────────────────┐
+                                │                  │                  │
+                                ▼                  ▼                  ▼
+                       ┌────────────────┐ ┌────────────────┐ ┌────────────────┐
+                       │ Cloudflare D1  │ │ Cloudflare R2  │ │ Multi-Tier OCR │
+                       │ Serverless DB  │ │ Object Storage │ │ & Risk Engine  │
+                       └────────────────┘ └────────────────┘ └────────────────┘
 ```
 
 ---
 
-## ⚡ Quick Start & Installation
+## 🛠️ Cloudflare Services Used
 
-### 1. Clone or Open Project Folder
-```bash
-cd d:\Scamm
-```
-
-### 2. Create Virtual Environment (Optional but Recommended)
-```bash
-python -m venv venv
-# On Windows:
-venv\Scripts\activate
-# On Linux/macOS:
-source venv/bin/activate
-```
-
-### 3. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Run Application
-```bash
-python app.py
-```
-
-### 5. Access in Browser
-Open your browser and navigate to:
-```
-http://127.0.0.1:5000
-```
+- **Cloudflare Pages / Workers**: Serves static assets (`/static/`) via Cloudflare's global edge network.
+- **Python WSGI Worker Engine (`worker.py` / `wsgi.py`)**: Executes Python Flask application routing, risk engine calculations, and analysis endpoints.
+- **Cloudflare D1 (`database/database.py`)**: Serverless SQL database storing scan history, risk scores, quiz progress, and awareness scores with automatic local SQLite fallback.
+- **Cloudflare R2 Storage**: Object storage for secure screenshot and audio byte streams.
+- **Multi-Tier OCR Engine (`utils/ocr.py`)**: In-memory screenshot processing via local Pytesseract, Cloud OCR API, or pattern fallback extractor.
 
 ---
 
-## 🧪 Running Automated Tests
+## 🔑 Required Environment Variables
 
-Run the included unittest suite to verify all routes, risk scoring rules, and database operations:
-```bash
-python -m unittest discover tests
-```
-
----
-
-## 🔒 Security & Privacy Practices
-
-- **Zero Unnecessary Data Retention**: Full sensitive messages are never stored permanently.
-- **Secure File Handling**: Input images and audio files are validated by extension and size (< 16MB), processed, and temporary files are automatically deleted.
-- **No API Key Exposure**: All secrets are stored in server-side `.env` environment variables.
-- **SQL Injection & XSS Protection**: All database queries use parameterized SQL bindings, and user content is HTML-escaped.
+| Variable | Required | Default Value | Description |
+|---|---|---|---|
+| `FLASK_ENV` | Yes | `production` | Production environment flag |
+| `DEBUG` | Yes | `False` | Disables debug mode in production |
+| `SECRET_KEY` | Yes | `(Generated Secret)` | Flask session encryption key |
+| `AI_PROVIDER` | No | `rule_based` | Analysis engine provider (`rule_based` or `ai_powered`) |
+| `CLOUDFLARE_D1_ACCOUNT_ID` | Production | `""` | Cloudflare Account ID for D1 SQL API |
+| `CLOUDFLARE_D1_DATABASE_ID` | Production | `""` | Cloudflare D1 Database ID |
+| `CLOUDFLARE_API_TOKEN` | Production | `""` | Cloudflare API Bearer Token |
+| `OCR_SPACE_API_KEY` | Optional | `""` | Optional Cloud OCR API Key |
 
 ---
 
-## ⚠️ Limitations & Disclaimers
+## 🚀 Deployment Instructions for Cloudflare
 
-1. **Risk Assessment Only**: Rule-based scam evaluation provides transparent risk scores based on known indicators. It is not a 100% guarantee of fraud or safety.
-2. **Heuristic URL Scanning**: URL analysis checks domain syntax, shorteners, and IP patterns. Real-time threat intelligence requires external API keys (e.g. VirusTotal).
-3. **OCR System**: Image text extraction relies on Tesseract OCR. Image clarity or stylized text can affect accuracy.
-4. **Audio Transcription**: Audio file analysis uses pattern matching and speech recognition fallback if cloud speech APIs are unconfigured.
+### Method 1: Deploy via Wrangler CLI (Recommended)
+
+1. **Install Wrangler CLI**:
+   ```bash
+   npm install -g wrangler
+   ```
+
+2. **Login to Cloudflare**:
+   ```bash
+   wrangler login
+   ```
+
+3. **Create Cloudflare D1 Database**:
+   ```bash
+   wrangler d1 create scamshield-db
+   ```
+   *Copy the generated `database_id` into your `wrangler.toml` file.*
+
+4. **Initialize D1 Schema**:
+   ```bash
+   wrangler d1 execute scamshield-db --file=./database/schema.sql
+   ```
+
+5. **Create Cloudflare R2 Storage Bucket**:
+   ```bash
+   wrangler r2 bucket create scamshield-uploads
+   ```
+
+6. **Deploy Application to Cloudflare**:
+   ```bash
+   wrangler deploy
+   ```
 
 ---
 
-## 🚀 Future Enhancements
+### Method 2: Deploy via Cloudflare Pages + GitHub Integration
 
-- Integration with VirusTotal / Google Safe Browsing APIs.
-- AI LLM integration via `utils/ai_service.py` for multi-turn conversational scam advice.
-- Mobile App / Browser Extension for automatic call & link warnings.
+1. Connect your GitHub repository: [`https://github.com/Amansrivastav2004/ScamShield-`](https://github.com/Amansrivastav2004/ScamShield-) to **Cloudflare Pages**.
+2. Set Build Command: `pip install -r requirements.txt`
+3. Set Output Directory: `static`
+4. Add Environment Variables in Cloudflare Dashboard:
+   - `FLASK_ENV`: `production`
+   - `DEBUG`: `False`
+   - `SECRET_KEY`: `<your-random-secret-key>`
 
 ---
 
-*Built with ❤️ for Cyber Safety & Awareness.*
+## 💻 Local Development Setup
+
+1. **Clone repository**:
+   ```bash
+   git clone https://github.com/Amansrivastav2004/ScamShield-.git
+   cd ScamShield-
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run local development server**:
+   ```bash
+   python app.py
+   ```
+   *Access local server at `http://127.0.0.1:5000`*
+
+4. **Run automated test suite**:
+   ```bash
+   python -m unittest discover tests
+   ```
+
+---
+
+## 📱 Mobile App Integration
+
+- **Android App**: Pre-configured in [`ScamShieldApp/`](./ScamShieldApp/). Open in Android Studio and build APK.
+- **PWA (Progressive Web App)**: Open `http://127.0.0.1:5000` or production URL in mobile browser and tap **"Add to Home Screen"**.
+
+---
+
+© 2026 ScamShield. All rights reserved. *"Don't Trust It. Check It."*

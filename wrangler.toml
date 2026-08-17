@@ -1,0 +1,28 @@
+# Cloudflare Workers / Pages Configuration for ScamShield
+
+name = "scamshield"
+main = "worker.py"
+compatibility_date = "2026-08-17"
+compatibility_flags = ["python_workers"]
+
+# Static Assets Configuration
+[assets]
+directory = "./static"
+binding = "ASSETS"
+
+# Environment Variables
+[vars]
+FLASK_ENV = "production"
+DEBUG = "False"
+AI_PROVIDER = "rule_based"
+
+# Cloudflare D1 Serverless SQL Database Binding
+[[d1_databases]]
+binding = "DB"
+database_name = "scamshield-db"
+database_id = "scamshield-d1-db-id"
+
+# Cloudflare R2 Object Storage Bucket Binding (For persistent uploads)
+[[r2_buckets]]
+binding = "STORAGE"
+bucket_name = "scamshield-uploads"
