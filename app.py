@@ -60,7 +60,9 @@ class VercelPathMiddleware:
             environ.get('HTTP_X_FORWARDED_URI') or 
             environ.get('HTTP_X_MATCHED_PATH') or 
             environ.get('HTTP_X_ORIGINAL_URI') or 
-            environ.get('HTTP_X_VERCEL_FORWARDED_PATH')
+            environ.get('HTTP_X_VERCEL_FORWARDED_PATH') or
+            environ.get('RAW_URI') or
+            environ.get('REQUEST_URI')
         )
         
         if original_path and not original_path.startswith('/static/'):
