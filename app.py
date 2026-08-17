@@ -50,23 +50,26 @@ else:
 def serve_static(filename):
     return send_from_directory(STATIC_DIR, filename)
 
-# Vercel Path Resolver Middleware
-@app.before_request
-def resolve_vercel_route_path():
-    """Ensure Vercel serverless function rewrites match original request paths cleanly."""
-    raw_path = (
-        request.headers.get('x-forwarded-uri') or 
-        request.headers.get('x-matched-path') or 
-        request.headers.get('x-original-uri') or 
-        request.headers.get('x-vercel-forwarded-path') or
-        request.environ.get('HTTP_X_FORWARDED_URI') or 
-        request.environ.get('HTTP_X_MATCHED_PATH') or
-        request.environ.get('RAW_URI')
-    )
-    if raw_path and not raw_path.startswith('/static/'):
-        clean_path = raw_path.split('?')[0]
-        if clean_path and clean_path not in ['/api/index', '/api/index.py']:
-            request.environ['PATH_INFO'] = clean_path
+class VercelPathMiddleware:
+    """WSGI Middleware to restore original request PATH_INFO on Vercel Serverless Function rewrites."""
+    def __init__(self, app):
+        self.app = app
+
+    def __call__(self, environ, start_response):
+        matched_path = (
+            environ.get('HTTP_X_FORWARDED_URI') or 
+            environ.get('HTTP_X_MATCHED_PATH') or 
+            environ.get('HTTP_X_ORIGINAL_URI') or 
+            environ.get('HTTP_X_VERCEL_FORWARDED_PATH') or
+            environ.get('RAW_URI')
+        )
+        if matched_path and not matched_path.startswith('/static/'):
+            clean_path = matched_path.split('?')[0]
+            if clean_path and clean_path not in ['/api/index', '/api/index.py']:
+                environ['PATH_INFO'] = clean_path
+        return self.app(environ, start_response)
+
+app.wsgi_app = VercelPathMiddleware(app.wsgi_app)
 
 @app.route('/api/index')
 @app.route('/api/index.py')
