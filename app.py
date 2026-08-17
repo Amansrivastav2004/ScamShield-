@@ -50,6 +50,16 @@ else:
 def serve_static(filename):
     return send_from_directory(STATIC_DIR, filename)
 
+# Vercel Path Resolver Middleware
+@app.before_request
+def resolve_vercel_route_path():
+    """Ensure Vercel serverless function rewrites match original request paths cleanly."""
+    matched_path = request.headers.get('X-Matched-Path') or request.environ.get('HTTP_X_MATCHED_PATH') or request.headers.get('X-Forwarded-Uri') or request.headers.get('X-Original-Uri')
+    if matched_path and not matched_path.startswith('/static/'):
+        clean_path = matched_path.split('?')[0]
+        if clean_path and clean_path not in ['/api/index', '/api/index.py']:
+            request.environ['PATH_INFO'] = clean_path
+
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB Max Upload Limit
 
 # Ensure Uploads folder exists
