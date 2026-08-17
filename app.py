@@ -56,18 +56,22 @@ class VercelPathMiddleware:
         self.app = app
 
     def __call__(self, environ, start_response):
-        raw_uri = (
-            environ.get('RAW_URI') or 
-            environ.get('REQUEST_URI') or 
+        original_path = (
             environ.get('HTTP_X_FORWARDED_URI') or 
             environ.get('HTTP_X_MATCHED_PATH') or 
             environ.get('HTTP_X_ORIGINAL_URI') or 
             environ.get('HTTP_X_VERCEL_FORWARDED_PATH')
         )
-        if raw_uri and not raw_uri.startswith('/static/'):
-            clean_path = raw_uri.split('?')[0]
-            if clean_path and clean_path not in ['/api/index', '/api/index.py']:
+        
+        if original_path and not original_path.startswith('/static/'):
+            clean_path = original_path.split('?')[0]
+            if clean_path not in ['/api/index', '/api/index.py']:
                 environ['PATH_INFO'] = clean_path
+            else:
+                environ['PATH_INFO'] = '/'
+        elif environ.get('PATH_INFO') in ['/api/index', '/api/index.py']:
+            environ['PATH_INFO'] = '/'
+
         return self.app(environ, start_response)
 
 app.wsgi_app = VercelPathMiddleware(app.wsgi_app)
